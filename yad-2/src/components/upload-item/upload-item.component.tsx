@@ -23,6 +23,8 @@ import {
   Title,
 } from "./upload-item.style";
 import Head from "next/head";
+import trashIcon from "@assets/icons/delete-icon.svg";
+import Image from "next/image";
 
 const fields = [
   { name: "title", label: "שם המוצר", type: "text", initialValue: "" },
@@ -106,6 +108,13 @@ const UploadItem = () => {
     }
   };
 
+  const handleDeleteFile = () => {
+    setForm({
+      ...form,
+      image: null,
+    });
+  };
+
   const handlePriceOptionChange = (optionValue: string, price?: string) => {
     if (optionValue === "other") {
       setForm({
@@ -152,6 +161,14 @@ const UploadItem = () => {
                         alt="Uploaded Product"
                         width={0}
                         height={0}
+                      />
+                      <Image
+                        style={{ cursor: "pointer" }}
+                        onClick={handleDeleteFile}
+                        src={trashIcon}
+                        alt="Trash icon"
+                        width={20}
+                        height={20}
                       />
                     </ItemImageContainer>
                   ) : (
