@@ -2,6 +2,9 @@ import React, { ChangeEvent, FormEvent, useState } from "react";
 import {
   Button,
   Container,
+  DimensionContainer,
+  DimensionInput,
+  DimensionLabel,
   FileInput,
   FileInputLabel,
   Form,
@@ -31,6 +34,18 @@ const fields = [
   },
   { name: "genre", label: "סוג המוצר", type: "text", initialValue: "" },
   { name: "color", label: "צבע", type: "text", initialValue: null },
+  { name: "material", label: "בד", type: "text", initialValue: null },
+  { name: "style", label: "סגנון", type: "text", initialValue: null },
+  {
+    name: "dimensions",
+    label: "מידות",
+    type: "dimensions",
+    initialValue: {
+      length: { value: null, label: "אורך" },
+      width: { value: null, label: "רוחב" },
+      height: { value: null, label: "גובה" },
+    },
+  },
   { name: "description", label: "תיאור", type: "textarea", initialValue: "" },
   {
     name: "price",
@@ -113,6 +128,9 @@ const UploadItem = () => {
     console.log(form);
   };
 
+  const isObject = (value: any): value is object =>
+    value !== null && typeof value === "object";
+
   return (
     <Container>
       <Head>
@@ -150,6 +168,30 @@ const UploadItem = () => {
                       />
                     </>
                   )
+                ) : field.type === "dimensions" &&
+                  isObject(field.initialValue) ? (
+                  <>
+                    <Label>{field.label}</Label>
+                    <DimensionContainer>
+                      {Object.keys(field.initialValue).map((key) => (
+                        <div key={key}>
+                          <DimensionLabel>
+                            {(field.initialValue as any)[key].label}
+                          </DimensionLabel>
+                          <DimensionInput
+                            type="number"
+                            name={`${field.name}.${key}.value`}
+                            id={`${field.name}.${key}.value`}
+                            value={
+                              form[field.name as keyof typeof form][key]
+                                ?.value || ""
+                            }
+                            onChange={handleInputChange}
+                          />
+                        </div>
+                      ))}
+                    </DimensionContainer>
+                  </>
                 ) : field.priceOption ? (
                   <>
                     <Label>{field.label}</Label>

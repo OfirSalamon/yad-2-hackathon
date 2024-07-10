@@ -182,3 +182,22 @@ export const PriceRadioButtonLabelContainer = styled(Row)`
   border-radius: ${({ theme }) => theme.borderRadius.lg};
   margin-bottom: ${({ theme }) => theme.sizes[18]};
 `;
+
+export const DimensionLabel = styled.label`
+  margin-bottom: 5px;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.mutedText};
+  display: block;
+  margin-bottom: ${({ theme }) => theme.sizes[6]};
+  font-size: ${({ theme }) => theme.typography.fontSize[18]};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
+`;
+
+export const DimensionInput = styled(Input)`
+  width: 80px;
+`;
+
+export const DimensionContainer = styled.div`
+  display: flex;
+  gap: 10px;
+`;
