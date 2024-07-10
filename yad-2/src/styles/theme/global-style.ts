@@ -7,7 +7,7 @@ const GlobalStyle = createGlobalStyle`
   
   html {
     -webkit-font-smoothing: antialiased;
-
+    direction: rtl;
     font-size: 11.2px;
   }
   
