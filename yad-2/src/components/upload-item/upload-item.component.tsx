@@ -30,6 +30,7 @@ const fields = [
     initialValue: null,
   },
   { name: "genre", label: "סוג המוצר", type: "text", initialValue: "" },
+  { name: "color", label: "צבע", type: "text", initialValue: null },
   { name: "description", label: "תיאור", type: "textarea", initialValue: "" },
   {
     name: "price",
@@ -119,125 +120,124 @@ const UploadItem = () => {
       </Head>
       <Title>מה תרצו למכור?</Title>
       <Form onSubmit={handleSubmit}>
-        {fields.map((field) => {
-          if (field.type === "file") {
-            return (
+        {fields.map(
+          (field) =>
+            (field.type === "file" ||
+              (form[field.name as keyof typeof form] !== null &&
+                form[field.name as keyof typeof form] !== undefined)) && (
               <FormGroup key={field.name}>
-                {form.image ? (
-                  <ItemImageContainer>
-                    <ItemImage
-                      src={URL.createObjectURL(form.image)}
-                      alt="Uploaded Product"
-                      width={0}
-                      height={0}
-                    />
-                  </ItemImageContainer>
-                ) : (
+                {field.type === "file" ? (
+                  form.image ? (
+                    <ItemImageContainer>
+                      <ItemImage
+                        src={URL.createObjectURL(form.image)}
+                        alt="Uploaded Product"
+                        width={0}
+                        height={0}
+                      />
+                    </ItemImageContainer>
+                  ) : (
+                    <>
+                      <FileInputLabel htmlFor={field.name}>
+                        {field.label}
+                      </FileInputLabel>
+                      <FileInput
+                        type={field.type}
+                        name={field.name}
+                        id={field.name}
+                        multiple
+                        onChange={handleFileChange}
+                      />
+                    </>
+                  )
+                ) : field.priceOption ? (
                   <>
-                    <FileInputLabel htmlFor={field.name}>
-                      {field.label}
-                    </FileInputLabel>
-                    <FileInput
+                    <Label>{field.label}</Label>
+                    <PriceRadioButtonLabelContainer>
+                      {field?.priceOption.options?.map((option) => (
+                        <React.Fragment key={option.value}>
+                          <PriceRadioInput
+                            type="radio"
+                            name={field.priceOption.name}
+                            id={`${field.priceOption.name}-${option.value}`}
+                            value={option.value}
+                            checked={
+                              form[field.priceOption.name] === option.value
+                            }
+                            onChange={() =>
+                              handlePriceOptionChange(
+                                option.value,
+                                option.price || ""
+                              )
+                            }
+                          />
+                          <PriceRadioButtonLabel
+                            htmlFor={`${field.priceOption.name}-${option.value}`}
+                          >
+                            {option.label}
+                            {option.price && `\n(₪${option.price})`}
+                          </PriceRadioButtonLabel>
+                        </React.Fragment>
+                      ))}
+                    </PriceRadioButtonLabelContainer>
+                    <Input
                       type={field.type}
                       name={field.name}
                       id={field.name}
-                      multiple
-                      onChange={handleFileChange}
+                      value={form[field.name as keyof typeof form] as string}
+                      onChange={handleInputChange}
                     />
+                  </>
+                ) : field.type === "radio" ? (
+                  <>
+                    <Label>{field.label}</Label>
+                    <RadioButtonsContainer>
+                      {field?.options?.map((option) => (
+                        <React.Fragment key={option.value}>
+                          <RadioInput
+                            type="radio"
+                            name={field.name}
+                            id={`${field.name}-${option.value}`}
+                            value={option.value}
+                            checked={form[field.name] === option.value}
+                            onChange={handleInputChange}
+                          />
+                          <RadioButtonLabel
+                            htmlFor={`${field.name}-${option.value}`}
+                            checked={form[field.name] === option.value}
+                          >
+                            {option.label}
+                          </RadioButtonLabel>
+                        </React.Fragment>
+                      ))}
+                    </RadioButtonsContainer>
+                  </>
+                ) : (
+                  <>
+                    {field.label && (
+                      <Label htmlFor={field.name}>{field.label}</Label>
+                    )}
+                    {field.type === "textarea" ? (
+                      <Textarea
+                        name={field.name}
+                        id={field.name}
+                        value={form[field.name as keyof typeof form] as string}
+                        onChange={handleInputChange}
+                      />
+                    ) : (
+                      <Input
+                        type={field.type}
+                        name={field.name}
+                        id={field.name}
+                        value={form[field.name as keyof typeof form] as string}
+                        onChange={handleInputChange}
+                      />
+                    )}
                   </>
                 )}
               </FormGroup>
-            );
-          } else if (field.priceOption) {
-            return (
-              <FormGroup key={field.name}>
-                <Label>{field.label}</Label>
-                <PriceRadioButtonLabelContainer>
-                  {field?.priceOption.options?.map((option) => (
-                    <React.Fragment key={option.value}>
-                      <PriceRadioInput
-                        type="radio"
-                        name={field.priceOption.name}
-                        id={`${field.priceOption.name}-${option.value}`}
-                        value={option.value}
-                        checked={form[field.priceOption.name] === option.value}
-                        onChange={() =>
-                          handlePriceOptionChange(
-                            option.value,
-                            option.price || ""
-                          )
-                        }
-                      />
-                      <PriceRadioButtonLabel
-                        htmlFor={`${field.priceOption.name}-${option.value}`}
-                      >
-                        {option.label}
-                        {option.price && `\n(₪${option.price})`}
-                      </PriceRadioButtonLabel>
-                    </React.Fragment>
-                  ))}
-                </PriceRadioButtonLabelContainer>
-                <Input
-                  type={field.type}
-                  name={field.name}
-                  id={field.name}
-                  value={form[field.name as keyof typeof form] as string}
-                  onChange={handleInputChange}
-                />
-              </FormGroup>
-            );
-          } else if (field.type === "radio") {
-            return (
-              <FormGroup key={field.name}>
-                <Label>{field.label}</Label>
-                <RadioButtonsContainer>
-                  {field?.options?.map((option) => (
-                    <React.Fragment key={option.value}>
-                      <RadioInput
-                        type="radio"
-                        name={field.name}
-                        id={`${field.name}-${option.value}`}
-                        value={option.value}
-                        checked={form[field.name] === option.value}
-                        onChange={handleInputChange}
-                      />
-                      <RadioButtonLabel
-                        htmlFor={`${field.name}-${option.value}`}
-                        checked={form[field.name] === option.value}
-                      >
-                        {option.label}
-                      </RadioButtonLabel>
-                    </React.Fragment>
-                  ))}
-                </RadioButtonsContainer>
-              </FormGroup>
-            );
-          } else {
-            return (
-              <FormGroup key={field.name}>
-                {field.label && (
-                  <Label htmlFor={field.name}>{field.label}</Label>
-                )}
-                {field.type === "textarea" ? (
-                  <Textarea
-                    name={field.name}
-                    id={field.name}
-                    value={form[field.name as keyof typeof form] as string}
-                    onChange={handleInputChange}
-                  />
-                ) : (
-                  <Input
-                    type={field.type}
-                    name={field.name}
-                    id={field.name}
-                    value={form[field.name as keyof typeof form] as string}
-                    onChange={handleInputChange}
-                  />
-                )}
-              </FormGroup>
-            );
-          }
-        })}
+            )
+        )}
         <Button type="submit">פרסם מוצר</Button>
       </Form>
     </Container>
