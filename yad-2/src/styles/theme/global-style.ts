@@ -17,6 +17,10 @@ const GlobalStyle = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
     font-family: Rubik, sans-serif;
   }
+
+  input {
+    font-family: Rubik, sans-serif;
+  }
   
   h3, h4, h5, h6 {
     margin: 0;

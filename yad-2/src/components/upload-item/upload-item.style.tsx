@@ -10,7 +10,7 @@ export const Container = styled.div`
 
 export const Title = styled.h1`
   text-align: center;
-  margin-bottom: ${({ theme }) => theme.sizes[40]};
+  margin-bottom: ${({ theme }) => theme.sizes[20]};
 `;
 
 export const Form = styled.form`
@@ -19,7 +19,7 @@ export const Form = styled.form`
 `;
 
 export const FormGroup = styled.div`
-  margin-bottom: ${({ theme }) => theme.sizes[48]};
+  margin-bottom: ${({ theme }) => theme.sizes[40]};
 `;
 
 export const Label = styled.label`
@@ -76,7 +76,7 @@ export const FileInputLabel = styled.label`
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #d0d0d0;
+    background-color: ${({ theme }) => theme.colors.grayTurquoiseHover};
   }
 `;
 
@@ -86,10 +86,12 @@ export const Button = styled.button`
   background-color: ${({ theme }) => theme.colors.brand};
   border-radius: ${({ theme }) => theme.borderRadius[26]};
   margin-top: ${({ theme }) => theme.sizes[20]};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
   color: white;
   border: none;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-family: Rubik, sans-serif;
 `;
 
 export const RadioButtonLabel = styled.label<{ checked: boolean }>`
@@ -160,7 +162,7 @@ export const PriceRadioButtonLabel = styled.label`
   border-radius: ${({ theme }) => theme.borderRadius.lg};
 
   &:hover {
-    background-color: #f0f0f0;
+    background-color: ${({ theme }) => theme.colors.grayTurquoiseHover};
   }
 `;
 
@@ -171,6 +173,7 @@ export const PriceRadioInput = styled.input`
   &:checked + ${PriceRadioButtonLabel} {
     background-color: ${({ theme }) => theme.colors.brand};
     color: white;
+    font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
   }
 `;
 

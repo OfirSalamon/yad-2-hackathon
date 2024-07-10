@@ -24,6 +24,7 @@ const theme = {
     purple: "#805DC1",
     turquoise: "#F2F9FA",
     grayTurquoise: "#E8EFEF",
+    grayTurquoiseHover: "#DCE5E5",
     pink: "#F6D7F9",
     brand: "#ff7100",
     brandOpacity: "#ff71000f",
