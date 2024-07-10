@@ -121,7 +121,7 @@ export const RadioButtonLabel = styled.label<{ checked: boolean }>`
 
 export const ItemImageContainer = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   width: 100%;
 `;
