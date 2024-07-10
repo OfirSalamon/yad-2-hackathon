@@ -32,21 +32,21 @@ const fields = [
   { name: "genre", label: "סוג המוצר", type: "text", initialValue: "" },
   { name: "description", label: "תיאור", type: "textarea", initialValue: "" },
   {
-    name: "priceOption",
-    label: "מחיר",
-    type: "radio",
-    options: [
-      { value: "cheap", label: "זול", price: "20" },
-      { value: "market_price", label: "מחיר שוק", price: "30" },
-      { value: "expensive", label: "יקר", price: "50" },
-      { value: "other", label: "אחר" },
-    ],
-    initialValue: "",
-  },
-  {
     name: "price",
     type: "number",
     initialValue: "",
+    label: "מחיר",
+    priceOption: {
+      name: "priceOption",
+      type: "radio",
+      options: [
+        { value: "cheap", label: "זול", price: "20" },
+        { value: "market_price", label: "מחיר שוק", price: "30" },
+        { value: "expensive", label: "יקר", price: "50" },
+        { value: "other", label: "אחר" },
+      ],
+      initialValue: "",
+    },
   },
   {
     name: "condition",
@@ -119,44 +119,48 @@ const UploadItem = () => {
       </Head>
       <Title>מה תרצו למכור?</Title>
       <Form onSubmit={handleSubmit}>
-        {fields.map((field) => (
-          <FormGroup key={field.name}>
-            {field.type === "file" &&
-              (form.image ? (
-                <ItemImageContainer>
-                  <ItemImage
-                    src={URL.createObjectURL(form.image)}
-                    alt="Uploaded Product"
-                    width={0}
-                    height={0}
-                  />
-                </ItemImageContainer>
-              ) : (
-                <>
-                  <FileInputLabel htmlFor={field.name}>
-                    {field.label}
-                  </FileInputLabel>
-                  <FileInput
-                    type={field.type}
-                    name={field.name}
-                    id={field.name}
-                    multiple
-                    onChange={handleFileChange}
-                  />
-                </>
-              ))}
-            {field.type === "radio" && field.name === "priceOption" && (
-              <>
+        {fields.map((field) => {
+          if (field.type === "file") {
+            return (
+              <FormGroup key={field.name}>
+                {form.image ? (
+                  <ItemImageContainer>
+                    <ItemImage
+                      src={URL.createObjectURL(form.image)}
+                      alt="Uploaded Product"
+                      width={0}
+                      height={0}
+                    />
+                  </ItemImageContainer>
+                ) : (
+                  <>
+                    <FileInputLabel htmlFor={field.name}>
+                      {field.label}
+                    </FileInputLabel>
+                    <FileInput
+                      type={field.type}
+                      name={field.name}
+                      id={field.name}
+                      multiple
+                      onChange={handleFileChange}
+                    />
+                  </>
+                )}
+              </FormGroup>
+            );
+          } else if (field.priceOption) {
+            return (
+              <FormGroup key={field.name}>
                 <Label>{field.label}</Label>
                 <PriceRadioButtonLabelContainer>
-                  {field?.options?.map((option) => (
+                  {field?.priceOption.options?.map((option) => (
                     <React.Fragment key={option.value}>
                       <PriceRadioInput
                         type="radio"
-                        name={field.name}
-                        id={`${field.name}-${option.value}`}
+                        name={field.priceOption.name}
+                        id={`${field.priceOption.name}-${option.value}`}
                         value={option.value}
-                        checked={form[field.name] === option.value}
+                        checked={form[field.priceOption.name] === option.value}
                         onChange={() =>
                           handlePriceOptionChange(
                             option.value,
@@ -165,7 +169,7 @@ const UploadItem = () => {
                         }
                       />
                       <PriceRadioButtonLabel
-                        htmlFor={`${field.name}-${option.value}`}
+                        htmlFor={`${field.priceOption.name}-${option.value}`}
                       >
                         {option.label}
                         {option.price && `\n(₪${option.price})`}
@@ -173,10 +177,18 @@ const UploadItem = () => {
                     </React.Fragment>
                   ))}
                 </PriceRadioButtonLabelContainer>
-              </>
-            )}
-            {field.type === "radio" && field.name !== "priceOption" && (
-              <>
+                <Input
+                  type={field.type}
+                  name={field.name}
+                  id={field.name}
+                  value={form[field.name as keyof typeof form] as string}
+                  onChange={handleInputChange}
+                />
+              </FormGroup>
+            );
+          } else if (field.type === "radio") {
+            return (
+              <FormGroup key={field.name}>
                 <Label>{field.label}</Label>
                 <RadioButtonsContainer>
                   {field?.options?.map((option) => (
@@ -198,10 +210,11 @@ const UploadItem = () => {
                     </React.Fragment>
                   ))}
                 </RadioButtonsContainer>
-              </>
-            )}
-            {!field.type.includes("radio") && field.type !== "file" && (
-              <>
+              </FormGroup>
+            );
+          } else {
+            return (
+              <FormGroup key={field.name}>
                 {field.label && (
                   <Label htmlFor={field.name}>{field.label}</Label>
                 )}
@@ -221,10 +234,10 @@ const UploadItem = () => {
                     onChange={handleInputChange}
                   />
                 )}
-              </>
-            )}
-          </FormGroup>
-        ))}
+              </FormGroup>
+            );
+          }
+        })}
         <Button type="submit">פרסם מוצר</Button>
       </Form>
     </Container>

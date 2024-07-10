@@ -180,4 +180,5 @@ export const PriceRadioInput = styled.input`
 export const PriceRadioButtonLabelContainer = styled(Row)`
   background-color: ${({ theme }) => theme.colors.grayTurquoise};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
+  margin-bottom: ${({ theme }) => theme.sizes[18]};
 `;
