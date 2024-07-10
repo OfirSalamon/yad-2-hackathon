@@ -15,7 +15,7 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-family: 'Roboto', sans-serif;
+    font-family: Rubik, sans-serif;
   }
   
   h3, h4, h5, h6 {
