@@ -25,6 +25,7 @@ import {
 import Head from "next/head";
 import trashIcon from "@assets/icons/delete-icon.svg";
 import Image from "next/image";
+import AiPopup from "@components/ai-popup/ai-popup.component";
 
 const fields = [
   { name: "title", label: "שם המוצר", type: "text", initialValue: "" },
