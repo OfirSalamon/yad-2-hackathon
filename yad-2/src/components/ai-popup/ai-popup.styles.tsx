@@ -1,7 +1,7 @@
-import { Row } from "@/styles/container/container.styles";
+import { Col } from "@/styles/container/container.styles";
 import styled, { css } from "styled-components";
 
-const Container = styled.div`
+const Container = styled(Col)`
   position: fixed;
   top: 0;
   right: 0;
@@ -10,6 +10,7 @@ const Container = styled.div`
 
   ${({ theme }) => css`
     background-color: ${theme.colors.brand};
+    padding: ${theme.sizes[48]};
   `}
 `;
 

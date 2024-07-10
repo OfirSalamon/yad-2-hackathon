@@ -89,6 +89,7 @@ const initialFormState = fields.reduce((acc, field) => {
 
 const UploadItem = () => {
   const [form, setForm] = useState(initialFormState);
+  const [showPopup, setShowPopup] = useState(true);
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -101,10 +102,11 @@ const UploadItem = () => {
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target?.files?.[0]) {
+    const file = e.target?.files?.[0];
+    if (file) {
       setForm({
         ...form,
-        image: e.target.files[0],
+        image: file,
       });
     }
   };
@@ -140,6 +142,8 @@ const UploadItem = () => {
 
   const isObject = (value: any): value is object =>
     value !== null && typeof value === "object";
+
+  const imageField = form["image"];
 
   return (
     <Container>
@@ -300,6 +304,15 @@ const UploadItem = () => {
         )}
         <Button type="submit">פרסם מוצר</Button>
       </Form>
+      {showPopup && (
+        <AiPopup
+          handleFileChange={handleFileChange}
+          name={"image"}
+          label={"לחץ להעלות תמונה של המוצר"}
+          image={imageField}
+          handleDeleteFile={handleDeleteFile}
+        />
+      )}
     </Container>
   );
 };

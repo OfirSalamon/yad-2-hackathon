@@ -7,7 +7,6 @@ const Home = () => {
     <>
       <Header />
       <UploadItem />
-      <AiPopup />
     </>
   );
 };
