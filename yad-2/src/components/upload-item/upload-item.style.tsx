@@ -160,6 +160,7 @@ export const PriceRadioButtonLabel = styled.label`
   text-align: center;
   transition: background-color 0.2s;
   border-radius: ${({ theme }) => theme.borderRadius.lg};
+  white-space: pre-wrap;
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.grayTurquoiseHover};
@@ -173,7 +174,6 @@ export const PriceRadioInput = styled.input`
   &:checked + ${PriceRadioButtonLabel} {
     background-color: ${({ theme }) => theme.colors.brand};
     color: white;
-    font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
   }
 `;
 

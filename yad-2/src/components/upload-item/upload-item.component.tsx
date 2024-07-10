@@ -22,6 +22,7 @@ import {
 import Head from "next/head";
 
 const fields = [
+  { name: "title", label: "שם המוצר", type: "text", initialValue: "" },
   {
     name: "image",
     label: "לחץ להעלות תמונה של המוצר",
@@ -38,7 +39,7 @@ const fields = [
       { value: "cheap", label: "זול", price: "20" },
       { value: "market_price", label: "מחיר שוק", price: "30" },
       { value: "expensive", label: "יקר", price: "50" },
-      { value: "other", label: "אחר" }, // New option
+      { value: "other", label: "אחר" },
     ],
     initialValue: "",
   },
@@ -167,7 +168,7 @@ const UploadItem = () => {
                         htmlFor={`${field.name}-${option.value}`}
                       >
                         {option.label}
-                        {option.price && <span> - {option.price}$</span>}
+                        {option.price && `\n(₪${option.price})`}
                       </PriceRadioButtonLabel>
                     </React.Fragment>
                   ))}
