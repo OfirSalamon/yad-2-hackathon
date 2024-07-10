@@ -57,7 +57,7 @@ const theme = {
     max: "9999px",
   },
   boxShadow: {
-    1: "2px 0px 8px 2px rgba(0, 0, 0, 0.1)",
+    1: "0 3px 10px 0 rgba(var(--black),0.1)",
     2: "1px 1px 8px rgba(101, 101, 101, 0.3)",
     3: "0px 2px 4px rgba(221, 221, 221, 0.25)",
     4: "0px 3px 30px 0px rgba(0, 0, 0, 0.06)",

@@ -1,11 +1,11 @@
 import "@/styles/globals.css";
-import theme from "@/styles/theme";
+import theme from "@/styles/theme/theme";
+import ThemeProvider from "@/styles/theme/theme-provider";
 import type { AppProps } from "next/app";
-import { ThemeProvider } from "styled-components";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider>
       <Component {...pageProps} />
     </ThemeProvider>
   );
