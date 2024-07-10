@@ -2,6 +2,8 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import {
   Button,
   Container,
+  FileInput,
+  FileInputLabel,
   Form,
   FormGroup,
   Input,
@@ -11,14 +13,38 @@ import {
 } from "./upload-item.style";
 import Head from "next/head";
 
+const fields = [
+  {
+    name: "images",
+    label: "לחץ להעלות תמונה של המוצר",
+    type: "file",
+    initialValue: [] as File[],
+  },
+  { name: "genre", label: "סוג המוצר", type: "text", initialValue: "" },
+  { name: "description", label: "תיאור", type: "textarea", initialValue: "" },
+  { name: "price", label: "מחיר", type: "number", initialValue: "" },
+  {
+    name: "category",
+    label: "מצב המוצר",
+    type: "radio",
+    options: [
+      { value: "new", label: "חדש באריזה" },
+      { value: "like_new", label: "כמו חדש" },
+      { value: "used", label: "משומש" },
+      { value: "need_fix", label: "נדרש תיקון" },
+      { value: "irrelevante", label: "לא רלוונטי" },
+    ],
+    initialValue: "",
+  },
+];
+
+const initialFormState = fields.reduce((acc, field) => {
+  acc[field.name] = field.initialValue;
+  return acc;
+}, {} as Record<string, any>);
+
 const UploadItem = () => {
-  const [form, setForm] = useState({
-    images: [] as File[],
-    genre: "",
-    description: "",
-    price: "",
-    location: "",
-  });
+  const [form, setForm] = useState(initialFormState);
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -48,59 +74,64 @@ const UploadItem = () => {
   return (
     <Container>
       <Head>
-        <title>Marketplace</title>
+        <title>העלאת מוצר</title>
       </Head>
       <Title>מה תרצו למכור?</Title>
       <Form onSubmit={handleSubmit}>
-        <FormGroup>
-          <Label htmlFor="images">תמונות של המוצר</Label>
-          <Input
-            type="file"
-            name="images"
-            id="images"
-            multiple
-            onChange={handleFileChange}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label htmlFor="genre">סוג המוצר</Label>
-          <Input
-            type="text"
-            name="genre"
-            id="genre"
-            value={form.genre}
-            onChange={handleInputChange}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label htmlFor="description">תיאור</Label>
-          <Textarea
-            name="description"
-            id="description"
-            value={form.description}
-            onChange={handleInputChange}
-          ></Textarea>
-        </FormGroup>
-        <FormGroup>
-          <Label htmlFor="price">מחיר</Label>
-          <Input
-            type="number"
-            name="price"
-            id="price"
-            value={form.price}
-            onChange={handleInputChange}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label htmlFor="location">מיקום</Label>
-          <Input
-            type="text"
-            name="location"
-            id="location"
-            value={form.location}
-            onChange={handleInputChange}
-          />
-        </FormGroup>
+        {fields.map((field) => (
+          <FormGroup key={field.name}>
+            {field.type === "file" ? (
+              <>
+                <FileInputLabel htmlFor={field.name}>
+                  {field.label}
+                </FileInputLabel>
+                <FileInput
+                  type={field.type}
+                  name={field.name}
+                  id={field.name}
+                  multiple
+                  onChange={handleFileChange}
+                />
+              </>
+            ) : field.type === "radio" ? (
+              <>
+                <Label>{field.label}</Label>
+                {field?.options?.map((option) => (
+                  <div key={option.value}>
+                    <input
+                      type="radio"
+                      name={field.name}
+                      value={option.value}
+                      checked={form[field.name] === option.value}
+                      onChange={handleInputChange}
+                    />
+                    <label>{option.label}</label>
+                  </div>
+                ))}
+              </>
+            ) : (
+              <>
+                <Label htmlFor={field.name}>{field.label}</Label>
+                {field.type === "textarea" ? (
+                  <Textarea
+                    name={field.name}
+                    id={field.name}
+                    value={form[field.name as keyof typeof form] as string}
+                    onChange={handleInputChange}
+                  />
+                ) : (
+                  <Input
+                    type={field.type}
+                    name={field.name}
+                    id={field.name}
+                    value={form[field.name as keyof typeof form] as string}
+                    onChange={handleInputChange}
+                  />
+                )}
+              </>
+            )}
+          </FormGroup>
+        ))}
         <Button type="submit">העלה</Button>
       </Form>
     </Container>
