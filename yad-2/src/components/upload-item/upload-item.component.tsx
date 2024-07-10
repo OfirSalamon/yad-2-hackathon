@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import {
   Button,
   Container,
@@ -8,6 +8,9 @@ import {
   FormGroup,
   Input,
   Label,
+  RadioButtonLabel,
+  RadioButtonsContainer,
+  RadioInput,
   Textarea,
   Title,
 } from "./upload-item.style";
@@ -96,18 +99,26 @@ const UploadItem = () => {
             ) : field.type === "radio" ? (
               <>
                 <Label>{field.label}</Label>
-                {field?.options?.map((option) => (
-                  <div key={option.value}>
-                    <input
-                      type="radio"
-                      name={field.name}
-                      value={option.value}
-                      checked={form[field.name] === option.value}
-                      onChange={handleInputChange}
-                    />
-                    <label>{option.label}</label>
-                  </div>
-                ))}
+                <RadioButtonsContainer>
+                  {field?.options?.map((option) => (
+                    <React.Fragment key={option.value}>
+                      <RadioInput
+                        type="radio"
+                        name={field.name}
+                        id={`${field.name}-${option.value}`}
+                        value={option.value}
+                        checked={form[field.name] === option.value}
+                        onChange={handleInputChange}
+                      />
+                      <RadioButtonLabel
+                        htmlFor={`${field.name}-${option.value}`}
+                        checked={form[field.name] === option.value}
+                      >
+                        {option.label}
+                      </RadioButtonLabel>
+                    </React.Fragment>
+                  ))}
+                </RadioButtonsContainer>
               </>
             ) : (
               <>

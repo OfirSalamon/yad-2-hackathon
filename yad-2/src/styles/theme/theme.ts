@@ -23,6 +23,8 @@ const theme = {
     turquoise: "#F2F9FA",
     grayTurquoise: "#E8EFEF",
     pink: "#F6D7F9",
+    brand: "#ff7100",
+    brandOpacity: "#ff71000f",
   },
   typography: {
     fontSize: {
