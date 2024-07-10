@@ -7,6 +7,8 @@ import {
   Form,
   FormGroup,
   Input,
+  ItemImage,
+  ItemImageContainer,
   Label,
   PriceRadioButtonLabel,
   PriceRadioButtonLabelContainer,
@@ -21,10 +23,10 @@ import Head from "next/head";
 
 const fields = [
   {
-    name: "images",
+    name: "image",
     label: "לחץ להעלות תמונה של המוצר",
     type: "file",
-    initialValue: [] as File[],
+    initialValue: null,
   },
   { name: "genre", label: "סוג המוצר", type: "text", initialValue: "" },
   { name: "description", label: "תיאור", type: "textarea", initialValue: "" },
@@ -61,9 +63,7 @@ const fields = [
 ];
 
 const initialFormState = fields.reduce((acc, field) => {
-  if (field.name !== "priceOption") {
-    acc[field.name] = field.initialValue;
-  }
+  acc[field.name] = field.initialValue;
   return acc;
 }, {} as Record<string, any>);
 
@@ -81,10 +81,10 @@ const UploadItem = () => {
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
+    if (e.target?.files?.[0]) {
       setForm({
         ...form,
-        images: Array.from(e.target.files),
+        image: e.target.files[0],
       });
     }
   };
@@ -94,11 +94,13 @@ const UploadItem = () => {
       setForm({
         ...form,
         price: "",
+        priceOption: optionValue,
       });
     } else {
       setForm({
         ...form,
         price: price || "",
+        priceOption: optionValue,
       });
     }
   };
@@ -118,20 +120,30 @@ const UploadItem = () => {
       <Form onSubmit={handleSubmit}>
         {fields.map((field) => (
           <FormGroup key={field.name}>
-            {field.type === "file" && (
-              <>
-                <FileInputLabel htmlFor={field.name}>
-                  {field.label}
-                </FileInputLabel>
-                <FileInput
-                  type={field.type}
-                  name={field.name}
-                  id={field.name}
-                  multiple
-                  onChange={handleFileChange}
-                />
-              </>
-            )}
+            {field.type === "file" &&
+              (form.image ? (
+                <ItemImageContainer>
+                  <ItemImage
+                    src={URL.createObjectURL(form.image)}
+                    alt="Uploaded Product"
+                    width={0}
+                    height={0}
+                  />
+                </ItemImageContainer>
+              ) : (
+                <>
+                  <FileInputLabel htmlFor={field.name}>
+                    {field.label}
+                  </FileInputLabel>
+                  <FileInput
+                    type={field.type}
+                    name={field.name}
+                    id={field.name}
+                    multiple
+                    onChange={handleFileChange}
+                  />
+                </>
+              ))}
             {field.type === "radio" && field.name === "priceOption" && (
               <>
                 <Label>{field.label}</Label>

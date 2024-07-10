@@ -1,4 +1,5 @@
 import { Row } from "@/styles/container/container.styles";
+import Image from "next/image";
 import styled, { css } from "styled-components";
 
 export const Container = styled.div`
@@ -114,6 +115,19 @@ export const RadioButtonLabel = styled.label<{ checked: boolean }>`
         color: ${theme.colors.brand};
       }
     `}
+`;
+
+export const ItemImageContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+`;
+
+export const ItemImage = styled(Image)`
+  height: 200px;
+  width: 100%;
+  object-fit: contain;
 `;
 
 export const RadioButtonsContainer = styled.div`
