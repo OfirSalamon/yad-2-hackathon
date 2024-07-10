@@ -9,7 +9,7 @@ export const Container = styled.div`
 
 export const Title = styled.h1`
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: ${({ theme }) => theme.sizes[40]};
 `;
 
 export const Form = styled.form`
@@ -18,12 +18,14 @@ export const Form = styled.form`
 `;
 
 export const FormGroup = styled.div`
-  margin-bottom: 15px;
+  margin-bottom: ${({ theme }) => theme.sizes[48]};
 `;
 
 export const Label = styled.label`
-  margin-bottom: 5px;
   display: block;
+  margin-bottom: ${({ theme }) => theme.sizes[18]};
+  font-size: ${({ theme }) => theme.typography.fontSize[24]};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
 `;
 
 export const Input = styled.input`
@@ -33,6 +35,10 @@ export const Input = styled.input`
   border-radius: 4px;
   width: 100%;
   box-sizing: border-box;
+  &:focus {
+    outline: none !important;
+    border-color: ${({ theme }) => theme.colors.brand};
+  }
 `;
 
 export const Textarea = styled.textarea`
@@ -42,6 +48,10 @@ export const Textarea = styled.textarea`
   border-radius: 4px;
   width: 100%;
   box-sizing: border-box;
+  &:focus {
+    outline: none !important;
+    border-color: ${({ theme }) => theme.colors.brand};
+  }
 `;
 
 export const FileInput = styled.input`
@@ -72,16 +82,13 @@ export const FileInputLabel = styled.label`
 export const Button = styled.button`
   padding: 10px 15px;
   font-size: 16px;
-  background-color: #0070f3;
+  background-color: ${({ theme }) => theme.colors.brand};
+  border-radius: ${({ theme }) => theme.borderRadius[26]};
+  margin-top: ${({ theme }) => theme.sizes[20]};
   color: white;
   border: none;
-  border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #005bb5;
-  }
 `;
 
 export const RadioButtonLabel = styled.label<{ checked: boolean }>`
@@ -99,7 +106,7 @@ export const RadioButtonLabel = styled.label<{ checked: boolean }>`
         : theme.colors.background};
       color: ${checked ? theme.colors.brand : "black"};
       border: 1px solid ${checked ? theme.colors.brand : "#aaa"};
-      padding: ${theme.sizes[10]};
+      padding: ${theme.sizes[14]};
       border-radius: ${theme.borderRadius.sm};
       &:hover {
         background-color: ${theme.colors.brandOpacity};
@@ -117,4 +124,43 @@ export const RadioButtonsContainer = styled.div`
 
 export const RadioInput = styled.input`
   display: none;
+`;
+
+export const PriceRadioButtonsContainer = styled.div`
+  display: flex;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+`;
+
+export const PriceRadioButtonLabel = styled.label`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  cursor: pointer;
+  flex: 1;
+  text-align: center;
+  transition: background-color 0.2s;
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+`;
+
+export const PriceRadioInput = styled.input`
+  position: absolute;
+  display: none;
+
+  &:checked + ${PriceRadioButtonLabel} {
+    background-color: ${({ theme }) => theme.colors.brand};
+    color: white;
+  }
+`;
+
+export const PriceRadioButtonLabelContainer = styled(Row)`
+  background-color: ${({ theme }) => theme.colors.grayTurquoise};
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
 `;

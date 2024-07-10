@@ -8,6 +8,9 @@ import {
   FormGroup,
   Input,
   Label,
+  PriceRadioButtonLabel,
+  PriceRadioButtonLabelContainer,
+  PriceRadioInput,
   RadioButtonLabel,
   RadioButtonsContainer,
   RadioInput,
@@ -25,9 +28,25 @@ const fields = [
   },
   { name: "genre", label: "סוג המוצר", type: "text", initialValue: "" },
   { name: "description", label: "תיאור", type: "textarea", initialValue: "" },
-  { name: "price", label: "מחיר", type: "number", initialValue: "" },
   {
-    name: "category",
+    name: "priceOption",
+    label: "מחיר",
+    type: "radio",
+    options: [
+      { value: "cheap", label: "זול", price: "20" },
+      { value: "market_price", label: "מחיר שוק", price: "30" },
+      { value: "expensive", label: "יקר", price: "50" },
+      { value: "other", label: "אחר" }, // New option
+    ],
+    initialValue: "",
+  },
+  {
+    name: "price",
+    type: "number",
+    initialValue: "",
+  },
+  {
+    name: "condition",
     label: "מצב המוצר",
     type: "radio",
     options: [
@@ -42,7 +61,9 @@ const fields = [
 ];
 
 const initialFormState = fields.reduce((acc, field) => {
-  acc[field.name] = field.initialValue;
+  if (field.name !== "priceOption") {
+    acc[field.name] = field.initialValue;
+  }
   return acc;
 }, {} as Record<string, any>);
 
@@ -68,6 +89,20 @@ const UploadItem = () => {
     }
   };
 
+  const handlePriceOptionChange = (optionValue: string, price?: string) => {
+    if (optionValue === "other") {
+      setForm({
+        ...form,
+        price: "",
+      });
+    } else {
+      setForm({
+        ...form,
+        price: price || "",
+      });
+    }
+  };
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     // Handle form submission logic here
@@ -83,7 +118,7 @@ const UploadItem = () => {
       <Form onSubmit={handleSubmit}>
         {fields.map((field) => (
           <FormGroup key={field.name}>
-            {field.type === "file" ? (
+            {field.type === "file" && (
               <>
                 <FileInputLabel htmlFor={field.name}>
                   {field.label}
@@ -96,7 +131,38 @@ const UploadItem = () => {
                   onChange={handleFileChange}
                 />
               </>
-            ) : field.type === "radio" ? (
+            )}
+            {field.type === "radio" && field.name === "priceOption" && (
+              <>
+                <Label>{field.label}</Label>
+                <PriceRadioButtonLabelContainer>
+                  {field?.options?.map((option) => (
+                    <React.Fragment key={option.value}>
+                      <PriceRadioInput
+                        type="radio"
+                        name={field.name}
+                        id={`${field.name}-${option.value}`}
+                        value={option.value}
+                        checked={form[field.name] === option.value}
+                        onChange={() =>
+                          handlePriceOptionChange(
+                            option.value,
+                            option.price || ""
+                          )
+                        }
+                      />
+                      <PriceRadioButtonLabel
+                        htmlFor={`${field.name}-${option.value}`}
+                      >
+                        {option.label}
+                        {option.price && <span> - {option.price}$</span>}
+                      </PriceRadioButtonLabel>
+                    </React.Fragment>
+                  ))}
+                </PriceRadioButtonLabelContainer>
+              </>
+            )}
+            {field.type === "radio" && field.name !== "priceOption" && (
               <>
                 <Label>{field.label}</Label>
                 <RadioButtonsContainer>
@@ -120,9 +186,12 @@ const UploadItem = () => {
                   ))}
                 </RadioButtonsContainer>
               </>
-            ) : (
+            )}
+            {!field.type.includes("radio") && field.type !== "file" && (
               <>
-                <Label htmlFor={field.name}>{field.label}</Label>
+                {field.label && (
+                  <Label htmlFor={field.name}>{field.label}</Label>
+                )}
                 {field.type === "textarea" ? (
                   <Textarea
                     name={field.name}
@@ -143,7 +212,7 @@ const UploadItem = () => {
             )}
           </FormGroup>
         ))}
-        <Button type="submit">העלה</Button>
+        <Button type="submit">פרסם מוצר</Button>
       </Form>
     </Container>
   );
