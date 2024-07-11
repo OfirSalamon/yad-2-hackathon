@@ -44,65 +44,71 @@ const AiPopup = ({
 }: Props) => {
   return (
     <Container $jcsb>
-      <MainContainer $gap={72}>
-        <Row $aic $gap={8}>
-          <Image src={backIcon} alt="Back icon" width={20} height={20} />
-          <Text s={18}>חזרה לדף הבית</Text>
-        </Row>
-        <ContentContainer $gap={48}>
-          <Col $gap={20}>
-            <Text w={"medium"} s={48}>
-              מה מוכרים?
-            </Text>
-            <Text s={20} c={"mutedText"} mb={84} lh={40}>
-              אל תעבדו קשה מידי! העלו תמונה של המוצר או תארו אותו, ואנחנו נדאג
-              להכל :)
-            </Text>
-          </Col>
-
-          <ImageContainer>
-            {image ? (
-              <Col $aic $jcc $fw>
-                <Text s={20} mb={16} w={"bold"}>
-                  נראה מצויין!
+      {loading ? (
+        <Spinner />
+      ) : (
+        <>
+          <MainContainer $gap={72}>
+            <Row $aic $gap={8}>
+              <Image src={backIcon} alt="Back icon" width={20} height={20} />
+              <Text s={18}>חזרה לדף הבית</Text>
+            </Row>
+            <ContentContainer $gap={48}>
+              <Col $gap={20}>
+                <Text w={"medium"} s={48}>
+                  מה מוכרים?
                 </Text>
-                <ImagePreview
-                  handleDeleteFile={handleDeleteFile}
-                  image={image}
+                <Text s={20} c={"mutedText"} mb={84} lh={40}>
+                  אל תעבדו קשה מידי! העלו תמונה של המוצר או תארו אותו, ואנחנו
+                  נדאג להכל :)
+                </Text>
+              </Col>
+
+              <ImageContainer>
+                {image ? (
+                  <Col $aic $jcc $fw>
+                    <Text s={20} mb={16} w={"bold"}>
+                      נראה מצויין!
+                    </Text>
+                    <ImagePreview
+                      handleDeleteFile={handleDeleteFile}
+                      image={image}
+                    />
+                  </Col>
+                ) : (
+                  <Col $aic $jcc>
+                    <Text s={20} mb={16} w={"bold"}>
+                      כאן מעלים תמונה
+                    </Text>
+                    <UploadImageContainer>
+                      <UploadImage
+                        name={imageName}
+                        label={label}
+                        handleFileChange={handleFileChange}
+                      />
+                    </UploadImageContainer>
+                  </Col>
+                )}
+              </ImageContainer>
+
+              <Col $fw $aic $jcc>
+                <Text s={20} mb={16} w={"bold"}>
+                  אפשר גם לכתוב תיאור קצר
+                </Text>
+                <Textarea
+                  name={descriptionName}
+                  id={descriptionName}
+                  value={descriptionValue}
+                  onChange={handleInputChange}
+                  height={"100px"}
+                  placeholder="תאר את המוצר באופן כללי, לדוגמה: אייפון במצב טוב"
                 />
               </Col>
-            ) : (
-              <Col $aic $jcc>
-                <Text s={20} mb={16} w={"bold"}>
-                  כאן מעלים תמונה
-                </Text>
-                <UploadImageContainer>
-                  <UploadImage
-                    name={imageName}
-                    label={label}
-                    handleFileChange={handleFileChange}
-                  />
-                </UploadImageContainer>
-              </Col>
-            )}
-          </ImageContainer>
-
-          <Col $fw $aic $jcc>
-            <Text s={20} mb={16} w={"bold"}>
-              אפשר גם לכתוב תיאור קצר
-            </Text>
-            <Textarea
-              name={descriptionName}
-              id={descriptionName}
-              value={descriptionValue}
-              onChange={handleInputChange}
-              height={"100px"}
-              placeholder="תאר את המוצר באופן כללי, לדוגמה: אייפון במצב טוב"
-            />
-          </Col>
-        </ContentContainer>
-      </MainContainer>
-      <Button onClick={onButtonClick}>בואו נמשיך</Button>
+            </ContentContainer>
+          </MainContainer>
+          <Button onClick={onButtonClick}>בואו נמשיך</Button>
+        </>
+      )}
     </Container>
   );
 };

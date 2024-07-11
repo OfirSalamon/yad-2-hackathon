@@ -105,7 +105,7 @@ const UploadItem = ({ options }: Props) => {
     market_price: "",
   });
   const [showPopup, setShowPopup] = useState(true);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
