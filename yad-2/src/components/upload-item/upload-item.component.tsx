@@ -99,7 +99,8 @@ interface Props {
 
 const UploadItem = ({ options }: Props) => {
   const [form, setForm] = useState(initialFormState);
-  const [showPopup, setShowPopup] = useState(false);
+  const [showPopup, setShowPopup] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -169,7 +170,7 @@ const UploadItem = ({ options }: Props) => {
   };
 
   const onPopupButtonClick = () => {
-    setShowPopup(false);
+    getFormAiDetails();
   };
 
   const isObject = (value: any): value is object =>
@@ -184,25 +185,23 @@ const UploadItem = ({ options }: Props) => {
   const imageField = form["image"];
 
   const getFormAiDetails = async () => {
-    getAiDetails({ url: IMAGE_URL }).then((data) => {
-      setForm({
-        ...form,
-        title: data.title,
-        genre: data.type,
-        color: data.color,
-        material: data.material,
-        manufacturer: data.manufacturer,
-        style: data.style,
-        description: data.description,
-        condition: data.condition,
-      });
-    });
+    setLoading(true);
+    getAiDetails({ url: IMAGE_URL, description: form.description })
+      .then((data) => {
+        setForm({
+          ...form,
+          title: data.title,
+          genre: data.type,
+          color: data.color,
+          material: data.material,
+          manufacturer: data.manufacturer,
+          style: data.style,
+          description: data.description,
+          condition: data.condition,
+        });
+      })
+      .then(() => setShowPopup(false));
   };
-
-  useEffect(() => {
-    if (!form.image) return;
-    // getFormAiDetails();
-  }, [form.image]);
 
   const renderOptions: any = {
     ["genre"]: options.product_types,
@@ -320,8 +319,9 @@ const UploadItem = ({ options }: Props) => {
         )}
         <Button type="submit">פרסם מוצר</Button>
       </Form>
-      {!showPopup && (
+      {showPopup && (
         <AiPopup
+          loading={loading}
           handleFileChange={handleFileChange}
           imageName={"image"}
           label={"לחץ להעלות תמונה של המוצר"}
