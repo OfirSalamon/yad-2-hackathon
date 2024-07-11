@@ -201,7 +201,7 @@ const UploadItem = ({ options }: Props) => {
 
   useEffect(() => {
     if (!form.image) return;
-    getFormAiDetails();
+    // getFormAiDetails();
   }, [form.image]);
 
   const renderOptions: any = {
@@ -320,7 +320,7 @@ const UploadItem = ({ options }: Props) => {
         )}
         <Button type="submit">פרסם מוצר</Button>
       </Form>
-      {showPopup && (
+      {!showPopup && (
         <AiPopup
           handleFileChange={handleFileChange}
           imageName={"image"}
