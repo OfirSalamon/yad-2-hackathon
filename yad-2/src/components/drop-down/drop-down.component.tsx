@@ -6,6 +6,8 @@ import {
   DropdownItem,
 } from "./drop-down.style";
 import { IOptions } from "@/types";
+import Arrow from "@assets/icons/arrow.svg";
+import Image from "next/image";
 
 interface DropdownProps {
   options: IOptions[];
@@ -36,6 +38,14 @@ const Dropdown: React.FC<DropdownProps> = ({
     <DropdownContainer>
       <DropdownHeader onClick={() => setShow(!show)}>
         {selected ?? "בחר"}
+        <Image
+          style={{
+            rotate: show ? "90deg" : "180deg",
+            transition: "all 0.6s ease",
+          }}
+          src={Arrow}
+          alt={"open"}
+        />
       </DropdownHeader>
       <DropdownContent show={show}>
         {options.map(({ name }) => (
