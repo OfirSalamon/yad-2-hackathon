@@ -1,4 +1,5 @@
 import { Row } from "@/styles/container/container.styles";
+import { Text } from "@/styles/typography/typography.styles";
 import Image from "next/image";
 import styled, { css } from "styled-components";
 
@@ -40,6 +41,10 @@ export const Input = styled.input`
     outline: none !important;
     border-color: ${({ theme }) => theme.colors.brand};
   }
+`;
+
+export const SwitchTextContainer = styled.div`
+  padding-top: 10px;
 `;
 
 export const Textarea = styled.textarea<{ height?: string }>`

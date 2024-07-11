@@ -37,8 +37,7 @@ const PriceOptions = ({
     [priceOptions.options[2].label]: above_market_price,
     [priceOptions.options[3].label]: undefined,
   };
-  console.log("map", map);
-  console.log("currPrice", currPrice);
+
   const currPriceNum = parseFloat(currPrice);
   const isCurrPriceInMap = Object.values(map).includes(currPriceNum);
   return (

@@ -16,10 +16,12 @@ import {
   FormGroup,
   Input,
   Label,
+  SwitchTextContainer,
   Textarea,
   Title,
 } from "./upload-item.style";
 import { Row } from "@/styles/container/container.styles";
+import { Text } from "@/styles/typography/typography.styles";
 
 interface Measurement {
   value: number | null;
@@ -113,7 +115,7 @@ const UploadItem = ({ options }: Props) => {
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    console.log("{ name, value }", { name, value });
+
     setForm({
       ...form,
       [name]: value,
@@ -321,9 +323,16 @@ const UploadItem = ({ options }: Props) => {
                 height={"150px"}
               />
               {form.description && (
-                <Button onClick={() => setAiDescription((prev) => !prev)}>
-                  {replaceText}
-                </Button>
+                <SwitchTextContainer>
+                  <Text
+                    onClick={() => setAiDescription((prev) => !prev)}
+                    s={20}
+                    mb={16}
+                    c={"brand"}
+                  >
+                    {replaceText}
+                  </Text>
+                </SwitchTextContainer>
               )}
             </>
           ) : (
