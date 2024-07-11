@@ -187,6 +187,84 @@ const UploadItem = () => {
     // getFormAiDetails();
   }, [form.image]);
 
+  const getFormGroupContent = (field: any) => {
+    if (field.type === "file") {
+      return form.image ? (
+        <ImagePreview handleDeleteFile={handleDeleteFile} image={form.image} />
+      ) : (
+        <UploadImage
+          handleFileChange={handleFileChange}
+          label={field.label}
+          name={field.name}
+        />
+      );
+    } else if (
+      field.type === "dimensions" &&
+      isObject(field.initialValue) &&
+      areDimensionsValid(field.initialValue)
+    ) {
+      return (
+        <>
+          <Label>{field.label}</Label>
+          <DimensionsInputs
+            dimensions={field.initialValue}
+            form={form}
+            handleInputChange={handleDimensionChange}
+            name={field.name}
+          />
+        </>
+      );
+    } else if (field.priceOption) {
+      return (
+        <>
+          <Label>{field.label}</Label>
+          <PriceOptions
+            priceOptions={field?.priceOption}
+            currPrice={form[field.priceOption.name]}
+            handleInputChange={handleInputChange}
+            handlePriceOptionChange={handlePriceOptionChange}
+            name={field.name}
+            value={form[field.name as keyof typeof form]}
+          />
+        </>
+      );
+    } else if (field.type === "radio") {
+      return (
+        <>
+          <Label>{field.label}</Label>
+          <RadioButtons
+            handleInputChange={handleInputChange}
+            name={field.name}
+            options={field?.options}
+            value={form[field.name]}
+          />
+        </>
+      );
+    } else if (field.type !== "dimensions") {
+      return (
+        <>
+          {field.label && <Label htmlFor={field.name}>{field.label}</Label>}
+          {field.type === "textarea" ? (
+            <Textarea
+              name={field.name}
+              id={field.name}
+              value={form[field.name as keyof typeof form] as string}
+              onChange={handleInputChange}
+            />
+          ) : (
+            <Input
+              type={field.type}
+              name={field.name}
+              id={field.name}
+              value={form[field.name as keyof typeof form] as string}
+              onChange={handleInputChange}
+            />
+          )}
+        </>
+      );
+    }
+  };
+
   return (
     <Container>
       <Head>
@@ -200,82 +278,7 @@ const UploadItem = () => {
               (form[field.name as keyof typeof form] !== null &&
                 form[field.name as keyof typeof form] !== undefined)) && (
               <FormGroup key={field.name}>
-                {field.type === "file" ? (
-                  form.image ? (
-                    <ImagePreview
-                      handleDeleteFile={handleDeleteFile}
-                      image={form.image}
-                    />
-                  ) : (
-                    <UploadImage
-                      handleFileChange={handleFileChange}
-                      label={field.label}
-                      name={field.name}
-                    />
-                  )
-                ) : field.type === "dimensions" &&
-                  isObject(field.initialValue) &&
-                  areDimensionsValid(field.initialValue) ? (
-                  <>
-                    <Label>{field.label}</Label>
-                    <DimensionsInputs
-                      dimensions={field.initialValue}
-                      form={form}
-                      handleInputChange={handleDimensionChange}
-                      name={field.name}
-                    />
-                  </>
-                ) : field.priceOption ? (
-                  <>
-                    <Label>{field.label}</Label>
-                    <PriceOptions
-                      priceOptions={field?.priceOption}
-                      currPrice={form[field.priceOption.name]}
-                      handleInputChange={handleInputChange}
-                      handlePriceOptionChange={handlePriceOptionChange}
-                      name={field.name}
-                      value={form[field.name as keyof typeof form]}
-                    />
-                  </>
-                ) : field.type === "radio" ? (
-                  <>
-                    <Label>{field.label}</Label>
-                    <RadioButtons
-                      handleInputChange={handleInputChange}
-                      name={field.name}
-                      options={field?.options}
-                      value={form[field.name]}
-                    />
-                  </>
-                ) : (
-                  field.type !== "dimensions" && (
-                    <>
-                      {field.label && (
-                        <Label htmlFor={field.name}>{field.label}</Label>
-                      )}
-                      {field.type === "textarea" ? (
-                        <Textarea
-                          name={field.name}
-                          id={field.name}
-                          value={
-                            form[field.name as keyof typeof form] as string
-                          }
-                          onChange={handleInputChange}
-                        />
-                      ) : (
-                        <Input
-                          type={field.type}
-                          name={field.name}
-                          id={field.name}
-                          value={
-                            form[field.name as keyof typeof form] as string
-                          }
-                          onChange={handleInputChange}
-                        />
-                      )}
-                    </>
-                  )
-                )}
+                {getFormGroupContent(field)}
               </FormGroup>
             )
         )}
