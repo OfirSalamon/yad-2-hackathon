@@ -10,16 +10,33 @@ export const Container = styled(Col)`
 
   ${({ theme }) => css`
     background-color: ${theme.colors.linen};
-    padding: ${theme.sizes[48]};
+    padding: ${theme.sizes[30]};
+    padding-top: ${theme.sizes[20]};
   `}
+`;
+
+export const UploadImageContainer = styled(Col)`
+  height: 200px;
+`;
+
+export const MainContainer = styled(Col)`
+  width: 100%;
+  text-align: center;
 `;
 
 export const ContentContainer = styled(Col)`
   width: 100%;
   text-align: center;
+
+  ${({ theme }) => css`
+    padding: ${theme.sizes[40]};
+    padding-top: unset;
+  `}
 `;
 
 export const ImageContainer = styled.div`
-  margin-bottom: 30px;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;

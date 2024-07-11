@@ -1,11 +1,18 @@
 import { Text } from "@/styles/typography/typography.styles";
-import { Container, ContentContainer, ImageContainer } from "./ai-popup.styles";
+import {
+  Container,
+  MainContainer,
+  ImageContainer,
+  ContentContainer,
+  UploadImageContainer,
+} from "./ai-popup.styles";
 import { ChangeEvent } from "react";
 import UploadImage from "@components/upload-image/upload-image.component";
 import { Button, Textarea } from "@components/upload-item/upload-item.style";
-import Image from "next/image";
-import trashIcon from "@assets/icons/delete-icon.svg";
+import backIcon from "@assets/icons/back.svg";
 import ImagePreview from "@components/image-preview/image-preview.component";
+import { Col, Row } from "@/styles/container/container.styles";
+import Image from "next/image";
 
 interface Props {
   image: File;
@@ -33,37 +40,66 @@ const AiPopup = ({
   onButtonClick,
 }: Props) => {
   return (
-    <Container $aic $jcsb>
-      <ContentContainer $aic $gap={20}>
-        <Text w={"medium"} s={32}>
-          מה מוכרים?
-        </Text>
-        <Text s={20} c={"mutedText"} mb={48}>
-          אל תעבדו קשה מידי! העלו תמונה של המוצר או תארו אותו, ואנחנו נדאג להכל
-          :)
-        </Text>
-        <ImageContainer>
-          {image ? (
-            <ImagePreview handleDeleteFile={handleDeleteFile} image={image} />
-          ) : (
-            <UploadImage
-              name={imageName}
-              label={label}
-              handleFileChange={handleFileChange}
-            />
-          )}
-        </ImageContainer>
+    <Container $jcsb>
+      <MainContainer $gap={48}>
+        <Row $aic $gap={8}>
+          <Image src={backIcon} alt="Back icon" width={20} height={20} />
+          <Text s={18}>חזרה לדף הבית</Text>
+        </Row>
+        <ContentContainer $gap={48}>
+          <Col $gap={14}>
+            <Text w={"medium"} s={48}>
+              מה מוכרים?
+            </Text>
+            <Text s={20} c={"mutedText"} mb={84}>
+              אל תעבדו קשה מידי! העלו תמונה של המוצר או תארו אותו, ואנחנו נדאג
+              להכל :)
+            </Text>
+          </Col>
 
-        <Textarea
-          name={descriptionName}
-          id={descriptionName}
-          value={descriptionValue}
-          onChange={handleInputChange}
-          height={"150px"}
-          placeholder="תאר את המוצר באופן כללי, לדוגמה: אייפון במצב טוב"
-        />
-      </ContentContainer>
-      <Button onClick={onButtonClick}>צא לדרך!</Button>
+          <ImageContainer>
+            {image ? (
+              <Col $aic $jcc $fw>
+                <Text s={20} mb={16} w={"bold"}>
+                  נראה מצויין!
+                </Text>
+                <ImagePreview
+                  handleDeleteFile={handleDeleteFile}
+                  image={image}
+                />
+              </Col>
+            ) : (
+              <Col $aic $jcc>
+                <Text s={20} mb={16} w={"bold"}>
+                  בואו נעלה תמונה
+                </Text>
+                <UploadImageContainer>
+                  <UploadImage
+                    name={imageName}
+                    label={label}
+                    handleFileChange={handleFileChange}
+                  />
+                </UploadImageContainer>
+              </Col>
+            )}
+          </ImageContainer>
+
+          <Col $fw $aic $jcc>
+            <Text s={20} mb={16} w={"bold"}>
+              אפשר גם לכתוב תיאור קצר
+            </Text>
+            <Textarea
+              name={descriptionName}
+              id={descriptionName}
+              value={descriptionValue}
+              onChange={handleInputChange}
+              height={"100px"}
+              placeholder="תאר את המוצר באופן כללי, לדוגמה: אייפון במצב טוב"
+            />
+          </Col>
+        </ContentContainer>
+      </MainContainer>
+      <Button onClick={onButtonClick}>בואו נמשיך</Button>
     </Container>
   );
 };

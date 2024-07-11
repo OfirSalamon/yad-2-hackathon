@@ -1,5 +1,8 @@
 import { ChangeEvent } from "react";
-import { FileInputLabel, FileInput } from "./upload-image.style";
+import { UploadImagePreview, FileInput } from "./upload-image.style";
+import uploadIcon from "@assets/icons/upload.svg";
+import Image from "next/image";
+import { Text } from "@/styles/typography/typography.styles";
 
 interface Props {
   name: string;
@@ -10,7 +13,10 @@ interface Props {
 const UploadImage = ({ name, label, handleFileChange }: Props) => {
   return (
     <>
-      <FileInputLabel htmlFor={name}>{label}</FileInputLabel>
+      <UploadImagePreview htmlFor={name}>
+        <Text s={18}>{label}</Text>
+        <Image src={uploadIcon} alt="Upload icon" width={20} height={20} />
+      </UploadImagePreview>
       <FileInput
         type={"file"}
         name={name}

@@ -45,18 +45,19 @@ export const Input = styled.input`
 export const Textarea = styled.textarea<{ height?: string }>`
   padding: 10px;
   font-size: 16px;
-  border: 1px solid #ccc;
+  border: 1px solid ${({ theme }) => theme.colors.grayTurquoiseHover};
   border-radius: 4px;
   width: 100%;
   box-sizing: border-box;
   height: ${({ height }) => height && height};
+  font-family: Rubik, sans-serif;
   &:focus {
     outline: none !important;
     border-color: ${({ theme }) => theme.colors.brand};
   }
   &::placeholder {
-    color: ${({ theme }) => theme.colors.mutedText};
-    font-size: ${({ theme }) => theme.typography.fontSize[20]};
+    color: ${({ theme }) => theme.colors.placeholderText};
+    font-size: ${({ theme }) => theme.typography.fontSize[18]};
   }
 `;
 
@@ -85,18 +86,22 @@ export const FileInputLabel = styled.label`
   }
 `;
 
-export const Button = styled.button`
+export const Button = styled.button<{ $fw?: boolean }>`
   padding: 10px 15px;
   font-size: 16px;
-  background-color: ${({ theme }) => theme.colors.brand};
-  border-radius: ${({ theme }) => theme.borderRadius[26]};
-  margin-top: ${({ theme }) => theme.sizes[20]};
-  font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
+
   color: white;
   border: none;
   cursor: pointer;
   transition: background-color 0.3s ease;
   font-family: Rubik, sans-serif;
+  ${({ theme, $fw }) => css`
+    ${$fw && `width: 100%;`}
+    background-color: ${theme.colors.brand};
+    border-radius: ${theme.borderRadius[26]};
+    margin-top: ${theme.sizes[20]};
+    font-weight: ${theme.typography.fontWeight.bold};
+  `}
 `;
 
 export const PriceRadioButtonsContainer = styled.div`

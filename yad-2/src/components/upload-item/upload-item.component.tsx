@@ -36,7 +36,7 @@ const fields = [
   { name: "title", label: "שם המוצר", type: "text", initialValue: "" },
   {
     name: "image",
-    label: "לחץ להעלות תמונה של המוצר",
+    label: "העלה תמונה",
     type: "file",
     initialValue: null,
   },
@@ -293,7 +293,7 @@ const UploadItem = () => {
         <AiPopup
           handleFileChange={handleFileChange}
           imageName={"image"}
-          label={"לחץ להעלות תמונה של המוצר"}
+          label={"העלה תמונה"}
           image={imageField}
           handleDeleteFile={handleDeleteFile}
           descriptionName={"description"}

@@ -4,23 +4,24 @@ export const FileInput = styled.input`
   display: none;
 `;
 
-export const FileInputLabel = styled.label`
+export const UploadImagePreview = styled.label`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 200px;
+  gap: 10px;
+  width: 150px;
+  height: 60px;
   box-sizing: border-box;
-  background-color: ${({ theme }) => theme.colors.grayTurquoise};
-  border: 2px dashed #ccc;
+  background-color: ${({ theme }) => theme.colors.white};
+  border: 2px dashed ${({ theme }) => theme.colors.grayTurquoiseHover};
   cursor: pointer;
   text-align: center;
   font-size: 16px;
   color: ${({ theme }) => theme.colors.mutedText};
-  border-radius: 4px;
+  border-radius: 10px;
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.grayTurquoiseHover};
+    background-color: ${({ theme }) => theme.colors.white};
   }
 `;
