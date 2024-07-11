@@ -101,8 +101,6 @@ const UploadItem = () => {
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    console.log("name", name);
-    console.log("value", value);
     setForm({
       ...form,
       [name]: value,
