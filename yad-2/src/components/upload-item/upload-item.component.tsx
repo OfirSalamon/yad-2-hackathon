@@ -27,6 +27,7 @@ import {
   Title,
 } from "./upload-item.style";
 import getFormAutocomplete from "@/utils/api/get-ai-details/get-form-autocomplete";
+import Dropdown from "@components/drop-down/drop-down.component";
 
 const IMAGE_URL = "https://vdivani.co.il/wp-content/uploads/2020/11/ELOIZ.jpg";
 const fields = [
