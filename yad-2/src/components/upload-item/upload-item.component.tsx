@@ -94,7 +94,7 @@ const initialFormState = fields.reduce((acc, field) => {
 
 const UploadItem = () => {
   const [form, setForm] = useState(initialFormState);
-  const [showPopup, setShowPopup] = useState(false);
+  const [showPopup, setShowPopup] = useState(true);
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>

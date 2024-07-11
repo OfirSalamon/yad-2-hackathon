@@ -1,7 +1,7 @@
 import { Col } from "@/styles/container/container.styles";
 import styled, { css } from "styled-components";
 
-const Container = styled(Col)`
+export const Container = styled(Col)`
   position: fixed;
   top: 0;
   right: 0;
@@ -14,4 +14,12 @@ const Container = styled(Col)`
   `}
 `;
 
-export { Container };
+export const ContentContainer = styled(Col)`
+  width: 100%;
+  text-align: center;
+`;
+
+export const ImageContainer = styled.div`
+  margin-bottom: 30px;
+  width: 100%;
+`;
