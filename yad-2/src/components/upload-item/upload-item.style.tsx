@@ -42,16 +42,21 @@ export const Input = styled.input`
   }
 `;
 
-export const Textarea = styled.textarea`
+export const Textarea = styled.textarea<{ height?: string }>`
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
   width: 100%;
   box-sizing: border-box;
+  height: ${({ height }) => height && height};
   &:focus {
     outline: none !important;
     border-color: ${({ theme }) => theme.colors.brand};
+  }
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.mutedText};
+    font-size: ${({ theme }) => theme.typography.fontSize[20]};
   }
 `;
 

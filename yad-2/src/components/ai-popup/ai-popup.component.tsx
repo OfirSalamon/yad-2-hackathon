@@ -1,10 +1,10 @@
 import { Text } from "@/styles/typography/typography.styles";
+
 import ImagePreview from "@components/image-preview/image-preview.component";
 import UploadImage from "@components/upload-image/upload-image.component";
-import { Textarea } from "@components/upload-item/upload-item.style";
+import { Button, Textarea } from "@components/upload-item/upload-item.style";
 import { ChangeEvent } from "react";
-import { Container } from "./ai-popup.styles";
-import Spinner from "@components/spinner/spinner.component";
+import { Container, ContentContainer, ImageContainer } from "./ai-popup.styles";
 
 interface Props {
   image: File;
@@ -17,6 +17,7 @@ interface Props {
   handleInputChange: (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => void;
+  onButtonClick: () => void;
 }
 
 const AiPopup = ({
@@ -28,27 +29,40 @@ const AiPopup = ({
   descriptionName,
   descriptionValue,
   handleInputChange,
+  onButtonClick,
 }: Props) => {
   return (
-    <Container $aic $gap={40}>
-      <Text w={"medium"} s={32}>
-        מה מוכרים?
-      </Text>
-      {image ? (
-        <ImagePreview handleDeleteFile={handleDeleteFile} image={image} />
-      ) : (
-        <UploadImage
-          name={imageName}
-          label={label}
-          handleFileChange={handleFileChange}
+    <Container $aic $jcsb>
+      <ContentContainer $aic $gap={20}>
+        <Text w={"medium"} s={32}>
+          מה מוכרים?
+        </Text>
+        <Text s={20} c={"mutedText"} mb={48}>
+          אל תעבדו קשה מידי! העלו תמונה של המוצר או תארו אותו, ואנחנו נדאג להכל
+          :)
+        </Text>
+        <ImageContainer>
+          {image ? (
+            <ImagePreview handleDeleteFile={handleDeleteFile} image={image} />
+          ) : (
+            <UploadImage
+              name={imageName}
+              label={label}
+              handleFileChange={handleFileChange}
+            />
+          )}
+        </ImageContainer>
+
+        <Textarea
+          name={descriptionName}
+          id={descriptionName}
+          value={descriptionValue}
+          onChange={handleInputChange}
+          height={"150px"}
+          placeholder="תאר את המוצר באופן כללי, לדוגמה: אייפון במצב טוב"
         />
-      )}
-      <Textarea
-        name={descriptionName}
-        id={descriptionName}
-        value={descriptionValue}
-        onChange={handleInputChange}
-      />
+      </ContentContainer>
+      <Button onClick={onButtonClick}>צא לדרך!</Button>
     </Container>
   );
 };

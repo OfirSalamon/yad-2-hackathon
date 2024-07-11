@@ -100,6 +100,7 @@ interface Props {
 const UploadItem = ({ options }: Props) => {
   const [form, setForm] = useState(initialFormState);
   const [showPopup, setShowPopup] = useState(false);
+
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
@@ -165,6 +166,10 @@ const UploadItem = ({ options }: Props) => {
     e.preventDefault();
     // Handle form submission logic here
     console.log(form);
+  };
+
+  const onPopupButtonClick = () => {
+    setShowPopup(false);
   };
 
   const isObject = (value: any): value is object =>
@@ -325,6 +330,7 @@ const UploadItem = ({ options }: Props) => {
           descriptionName={"description"}
           descriptionValue={form["description"]}
           handleInputChange={handleInputChange}
+          onButtonClick={onPopupButtonClick}
         />
       )}
     </Container>
