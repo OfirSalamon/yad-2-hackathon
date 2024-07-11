@@ -163,6 +163,10 @@ const UploadItem = () => {
     console.log(form);
   };
 
+  const onPopupButtonClick = () => {
+    setShowPopup(false);
+  };
+
   const isObject = (value: any): value is object =>
     value !== null && typeof value === "object";
 
@@ -295,6 +299,7 @@ const UploadItem = () => {
           descriptionName={"description"}
           descriptionValue={form["description"]}
           handleInputChange={handleInputChange}
+          onButtonClick={onPopupButtonClick}
         />
       )}
     </Container>

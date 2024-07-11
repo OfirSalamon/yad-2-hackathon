@@ -18,6 +18,7 @@ interface Props {
   handleInputChange: (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => void;
+  onButtonClick: () => void;
 }
 
 const AiPopup = ({
@@ -29,6 +30,7 @@ const AiPopup = ({
   descriptionName,
   descriptionValue,
   handleInputChange,
+  onButtonClick,
 }: Props) => {
   return (
     <Container $aic $jcsb>
@@ -61,7 +63,7 @@ const AiPopup = ({
           placeholder="תאר את המוצר באופן כללי, לדוגמה: אייפון במצב טוב"
         />
       </ContentContainer>
-      <Button type="submit">צא לדרך!</Button>
+      <Button onClick={onButtonClick}>צא לדרך!</Button>
     </Container>
   );
 };
