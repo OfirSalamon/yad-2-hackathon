@@ -9,42 +9,50 @@ import { Input } from "@components/upload-item/upload-item.style";
 interface Props {
   priceOptions: any;
   currPrice: number;
+  above_market_price: number;
+  below_market_price: number;
+  market_price: number;
   name: string;
   value: number;
   handleInputChange: (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => void;
-  handlePriceOptionChange: (optionValue: string, price?: string) => void;
+  handlePriceOptionChange: (price?: string) => void;
 }
 
 const PriceOptions = ({
   priceOptions,
   currPrice,
+  above_market_price,
+  below_market_price,
+  market_price,
   handlePriceOptionChange,
   name,
   value,
   handleInputChange,
 }: Props) => {
+  const map = {
+    [priceOptions.options[0].label]: below_market_price,
+    [priceOptions.options[1].label]: market_price,
+    [priceOptions.options[2].label]: above_market_price,
+    [priceOptions.options[3].label]: null,
+  };
   return (
     <>
       <PriceRadioButtonLabelContainer>
-        {priceOptions.options?.map((option: any) => (
-          <React.Fragment key={option.value}>
+        {Object.keys(map)?.map((name: string, index) => (
+          <React.Fragment key={index}>
             <PriceRadioInput
               type="radio"
               name={priceOptions.name}
-              id={`${priceOptions.name}-${option.value}`}
-              value={option.value}
-              checked={currPrice === option.value}
-              onChange={() =>
-                handlePriceOptionChange(option.value, option.price || "")
-              }
+              id={`${priceOptions.name}-${name}`}
+              value={map[name]}
+              checked={currPrice === map[name]}
+              onChange={() => handlePriceOptionChange(map[name] || "")}
             />
-            <PriceRadioButtonLabel
-              htmlFor={`${priceOptions.name}-${option.value}`}
-            >
-              {option.label}
-              {option.price && `\n(₪${option.price})`}
+            <PriceRadioButtonLabel htmlFor={`${priceOptions.name}-${name}`}>
+              {name}
+              {map[name] && `\n(₪${map[name]})`}
             </PriceRadioButtonLabel>
           </React.Fragment>
         ))}

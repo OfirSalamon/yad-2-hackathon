@@ -41,17 +41,17 @@ const AiPopup = ({
 }: Props) => {
   return (
     <Container $jcsb>
-      <MainContainer $gap={48}>
+      <MainContainer $gap={72}>
         <Row $aic $gap={8}>
           <Image src={backIcon} alt="Back icon" width={20} height={20} />
           <Text s={18}>חזרה לדף הבית</Text>
         </Row>
         <ContentContainer $gap={48}>
-          <Col $gap={14}>
+          <Col $gap={20}>
             <Text w={"medium"} s={48}>
               מה מוכרים?
             </Text>
-            <Text s={20} c={"mutedText"} mb={84}>
+            <Text s={20} c={"mutedText"} mb={84} lh={40}>
               אל תעבדו קשה מידי! העלו תמונה של המוצר או תארו אותו, ואנחנו נדאג
               להכל :)
             </Text>
@@ -71,7 +71,7 @@ const AiPopup = ({
             ) : (
               <Col $aic $jcc>
                 <Text s={20} mb={16} w={"bold"}>
-                  בואו נעלה תמונה
+                  כאן מעלים תמונה
                 </Text>
                 <UploadImageContainer>
                   <UploadImage

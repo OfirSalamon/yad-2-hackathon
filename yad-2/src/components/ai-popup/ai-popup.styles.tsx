@@ -11,7 +11,7 @@ export const Container = styled(Col)`
   ${({ theme }) => css`
     background-color: ${theme.colors.linen};
     padding: ${theme.sizes[30]};
-    padding-top: ${theme.sizes[20]};
+    padding-top: ${theme.sizes[40]};
   `}
 `;
 

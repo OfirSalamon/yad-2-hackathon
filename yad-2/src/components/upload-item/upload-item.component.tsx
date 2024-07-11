@@ -99,7 +99,12 @@ interface Props {
 
 const UploadItem = ({ options }: Props) => {
   const [form, setForm] = useState(initialFormState);
-  const [showPopup, setShowPopup] = useState(false);
+  const [prices, setPrices] = useState({
+    below_market_price: "",
+    above_market_price: "",
+    market_price: "",
+  });
+  const [showPopup, setShowPopup] = useState(true);
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -146,20 +151,11 @@ const UploadItem = ({ options }: Props) => {
     });
   };
 
-  const handlePriceOptionChange = (optionValue: string, price?: string) => {
-    if (optionValue === "other") {
-      setForm({
-        ...form,
-        price: "",
-        priceOption: optionValue,
-      });
-    } else {
-      setForm({
-        ...form,
-        price: price || "",
-        priceOption: optionValue,
-      });
-    }
+  const handlePriceOptionChange = (price?: string) => {
+    setForm({
+      ...form,
+      price: price || "",
+    });
   };
 
   const handleSubmit = (e: FormEvent) => {
@@ -185,6 +181,12 @@ const UploadItem = ({ options }: Props) => {
 
   const getFormAiDetails = async () => {
     getAiDetails({ url: IMAGE_URL }).then((data) => {
+      const { above_market_price, below_market_price, market_price } = data;
+      setPrices({
+        below_market_price,
+        above_market_price,
+        market_price,
+      });
       setForm({
         ...form,
         title: data.title,
@@ -261,6 +263,9 @@ const UploadItem = ({ options }: Props) => {
             handlePriceOptionChange={handlePriceOptionChange}
             name={field.name}
             value={form[field.name as keyof typeof form]}
+            above_market_price={+prices.above_market_price}
+            below_market_price={+prices.below_market_price}
+            market_price={+prices.market_price}
           />
         </>
       );
@@ -320,7 +325,7 @@ const UploadItem = ({ options }: Props) => {
         )}
         <Button type="submit">פרסם מוצר</Button>
       </Form>
-      {!showPopup && (
+      {showPopup && (
         <AiPopup
           handleFileChange={handleFileChange}
           imageName={"image"}
