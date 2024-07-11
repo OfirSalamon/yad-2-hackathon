@@ -24,6 +24,17 @@ import {
 } from "./upload-item.style";
 import DimensionsInputs from "@components/dimensions-inputs/dimensions-inputs.component";
 
+interface Measurement {
+  value: number | null;
+  label: string;
+}
+
+interface MeasurementValues {
+  length: Measurement;
+  width: Measurement;
+  height: Measurement;
+}
+
 const fields = [
   { name: "title", label: "שם המוצר", type: "text", initialValue: "" },
   {
@@ -41,9 +52,9 @@ const fields = [
     label: "מידות",
     type: "dimensions",
     initialValue: {
-      length: { value: null, label: "אורך" },
-      width: { value: null, label: "רוחב" },
-      height: { value: null, label: "גובה" },
+      length: { value: 10, label: "אורך" },
+      width: { value: 10, label: "רוחב" },
+      height: { value: 10, label: "גובה" },
     },
   },
   { name: "description", label: "תיאור", type: "textarea", initialValue: "" },
@@ -158,6 +169,12 @@ const UploadItem = () => {
   const isObject = (value: any): value is object =>
     value !== null && typeof value === "object";
 
+  const areDimensionsValid = (dimensions: MeasurementValues): boolean => {
+    return Object.values(dimensions).every(
+      (dimension) => dimension.value !== null
+    );
+  };
+
   const imageField = form["image"];
 
   return (
@@ -187,7 +204,8 @@ const UploadItem = () => {
                     />
                   )
                 ) : field.type === "dimensions" &&
-                  isObject(field.initialValue) ? (
+                  isObject(field.initialValue) &&
+                  areDimensionsValid(field.initialValue) ? (
                   <>
                     <Label>{field.label}</Label>
                     <DimensionsInputs
@@ -260,27 +278,33 @@ const UploadItem = () => {
                     </RadioButtonsContainer>
                   </>
                 ) : (
-                  <>
-                    {field.label && (
-                      <Label htmlFor={field.name}>{field.label}</Label>
-                    )}
-                    {field.type === "textarea" ? (
-                      <Textarea
-                        name={field.name}
-                        id={field.name}
-                        value={form[field.name as keyof typeof form] as string}
-                        onChange={handleInputChange}
-                      />
-                    ) : (
-                      <Input
-                        type={field.type}
-                        name={field.name}
-                        id={field.name}
-                        value={form[field.name as keyof typeof form] as string}
-                        onChange={handleInputChange}
-                      />
-                    )}
-                  </>
+                  field.type !== "dimensions" && (
+                    <>
+                      {field.label && (
+                        <Label htmlFor={field.name}>{field.label}</Label>
+                      )}
+                      {field.type === "textarea" ? (
+                        <Textarea
+                          name={field.name}
+                          id={field.name}
+                          value={
+                            form[field.name as keyof typeof form] as string
+                          }
+                          onChange={handleInputChange}
+                        />
+                      ) : (
+                        <Input
+                          type={field.type}
+                          name={field.name}
+                          id={field.name}
+                          value={
+                            form[field.name as keyof typeof form] as string
+                          }
+                          onChange={handleInputChange}
+                        />
+                      )}
+                    </>
+                  )
                 )}
               </FormGroup>
             )
