@@ -16,7 +16,7 @@ export const Container = styled(Col)`
 `;
 
 export const UploadImageContainer = styled(Col)`
-  height: 200px;
+  height: 130px;
 `;
 
 export const MainContainer = styled(Col)`
