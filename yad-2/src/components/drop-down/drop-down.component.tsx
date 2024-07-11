@@ -1,19 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   DropdownContainer,
   DropdownContent,
   DropdownHeader,
   DropdownItem,
 } from "./drop-down.style";
+import { IOptions } from "@/types";
 
 interface DropdownProps {
-  options: { id: number; name: string }[];
+  options: IOptions[];
   onSelect: (value: string) => void;
+  selectedOption?: string;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ options, onSelect }) => {
+const Dropdown: React.FC<DropdownProps> = ({
+  options,
+  onSelect,
+  selectedOption,
+}) => {
   const [show, setShow] = useState(false);
-  const [selected, setSelected] = useState<string>();
+  const [selected, setSelected] = useState<string | null>(
+    selectedOption ?? null
+  );
+  useEffect(() => {
+    if (!selectedOption) return;
+    setSelected(selectedOption);
+  }, [selectedOption]);
   const handleSelect = (option: string) => {
     onSelect(option);
     setSelected(option);
@@ -23,7 +35,7 @@ const Dropdown: React.FC<DropdownProps> = ({ options, onSelect }) => {
   return (
     <DropdownContainer>
       <DropdownHeader onClick={() => setShow(!show)}>
-        {selected ?? "select"}
+        {selected ?? "בחר"}
       </DropdownHeader>
       <DropdownContent show={show}>
         {options.map(({ name }) => (

@@ -2,6 +2,7 @@ import Image from "next/image";
 import styled from "styled-components";
 
 export const ItemImageContainer = styled.div`
+  position: relative;
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -11,5 +12,5 @@ export const ItemImageContainer = styled.div`
 export const ItemImage = styled(Image)`
   height: 200px;
   width: 100%;
-  object-fit: contain;
+  object-fit: cover;
 `;

@@ -17,7 +17,12 @@ const ImagePreview = ({ image, handleDeleteFile }: Props) => {
         height={0}
       />
       <Image
-        style={{ cursor: "pointer" }}
+        style={{
+          cursor: "pointer",
+          position: "absolute",
+          bottom: "10px",
+          left: "10px",
+        }}
         onClick={handleDeleteFile}
         src={trashIcon}
         alt="Trash icon"
