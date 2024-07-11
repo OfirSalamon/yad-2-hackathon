@@ -86,6 +86,12 @@ const fields = [
     ],
     initialValue: "",
   },
+  {
+    name: "address",
+    label: "מיקום איסוף",
+    type: "text",
+    initialValue: "",
+  },
 ];
 
 const initialFormState = fields.reduce((acc, field) => {
@@ -149,6 +155,13 @@ const UploadItem = ({ options }: Props) => {
     setForm({
       ...form,
       image: null,
+    });
+  };
+
+  const handleUseMyLocation = () => {
+    setForm({
+      ...form,
+      address: "ריבל 7, תל אביב",
     });
   };
 
@@ -292,13 +305,18 @@ const UploadItem = ({ options }: Props) => {
               onChange={handleInputChange}
             />
           ) : (
-            <Input
-              type={field.type}
-              name={field.name}
-              id={field.name}
-              value={form[field.name as keyof typeof form] as string}
-              onChange={handleInputChange}
-            />
+            <>
+              <Input
+                type={field.type}
+                name={field.name}
+                id={field.name}
+                value={form[field.name as keyof typeof form] as string}
+                onChange={handleInputChange}
+              />
+              {field.name === "address" && (
+                <Button onClick={handleUseMyLocation}>השתמש במיקום שלי</Button>
+              )}
+            </>
           )}
         </>
       );
