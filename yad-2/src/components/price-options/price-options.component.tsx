@@ -31,11 +31,11 @@ const PriceOptions = ({
   value,
   handleInputChange,
 }: Props) => {
-  const map = {
+  const map: { [key: string]: number | undefined } = {
     [priceOptions.options[0].label]: below_market_price,
     [priceOptions.options[1].label]: market_price,
     [priceOptions.options[2].label]: above_market_price,
-    [priceOptions.options[3].label]: null,
+    [priceOptions.options[3].label]: undefined,
   };
   return (
     <>
@@ -48,7 +48,7 @@ const PriceOptions = ({
               id={`${priceOptions.name}-${name}`}
               value={map[name]}
               checked={currPrice === map[name]}
-              onChange={() => handlePriceOptionChange(map[name] || "")}
+              onChange={() => handlePriceOptionChange(`${map[name]}` || "")}
             />
             <PriceRadioButtonLabel htmlFor={`${priceOptions.name}-${name}`}>
               {name}
