@@ -1,11 +1,10 @@
 import { Text } from "@/styles/typography/typography.styles";
-import { Container } from "./ai-popup.styles";
-import { ChangeEvent } from "react";
+import ImagePreview from "@components/image-preview/image-preview.component";
 import UploadImage from "@components/upload-image/upload-image.component";
 import { Textarea } from "@components/upload-item/upload-item.style";
-import Image from "next/image";
-import trashIcon from "@assets/icons/delete-icon.svg";
-import ImagePreview from "@components/image-preview/image-preview.component";
+import { ChangeEvent } from "react";
+import { Container } from "./ai-popup.styles";
+import Spinner from "@components/spinner/spinner.component";
 
 interface Props {
   image: File;

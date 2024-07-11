@@ -15,5 +15,7 @@ export interface IDetails {
   materials: IOptions[];
   conditions: IOptions[];
   manufacturers: IEntity[];
-  colors: IEntity[];
+  colors: IOptions[];
+  styles: IOptions[];
+  product_types: IOptions[];
 }

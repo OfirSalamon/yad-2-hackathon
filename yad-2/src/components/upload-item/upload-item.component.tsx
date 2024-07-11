@@ -1,7 +1,8 @@
+import { IDetails } from "@/types";
 import getAiDetails from "@/utils/api/get-ai-details/get-ai-details";
-import getFormAutocomplete from "@/utils/api/get-ai-details/get-form-autocomplete";
 import AiPopup from "@components/ai-popup/ai-popup.component";
 import DimensionsInputs from "@components/dimensions-inputs/dimensions-inputs.component";
+import Dropdown from "@components/drop-down/drop-down.component";
 import ImagePreview from "@components/image-preview/image-preview.component";
 import PriceOptions from "@components/price-options/price-options.component";
 import RadioButtons from "@components/radio-buttons/radio-buttons.component";
@@ -29,21 +30,21 @@ interface MeasurementValues {
   width: Measurement;
   height: Measurement;
 }
-import Dropdown from "@components/drop-down/drop-down.component";
 
 const IMAGE_URL = "https://vdivani.co.il/wp-content/uploads/2020/11/ELOIZ.jpg";
 const fields = [
-  { name: "title", label: "שם המוצר", type: "text", initialValue: "" },
   {
     name: "image",
     label: "לחץ להעלות תמונה של המוצר",
     type: "file",
     initialValue: null,
   },
-  { name: "genre", label: "סוג המוצר", type: "text", initialValue: "" },
-  { name: "color", label: "צבע", type: "text", initialValue: null },
-  { name: "material", label: "בד", type: "text", initialValue: null },
-  { name: "style", label: "סגנון", type: "text", initialValue: null },
+  { name: "title", label: "שם המוצר", type: "text", initialValue: "" },
+  { name: "genre", label: "סוג המוצר", type: "select", initialValue: "" },
+  { name: "color", label: "צבע", type: "select", initialValue: "" },
+  { name: "material", label: "סוג בד", type: "select", initialValue: "" },
+  { name: "manufacturer", label: "יצרן", type: "select", initialValue: "" },
+  { name: "style", label: "סגנון", type: "select", initialValue: "" },
   {
     name: "dimensions",
     label: "מידות",
@@ -92,10 +93,13 @@ const initialFormState = fields.reduce((acc, field) => {
   return acc;
 }, {} as Record<string, any>);
 
-const UploadItem = () => {
+interface Props {
+  options: IDetails;
+}
+
+const UploadItem = ({ options }: Props) => {
   const [form, setForm] = useState(initialFormState);
   const [showPopup, setShowPopup] = useState(false);
-
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
@@ -175,18 +179,33 @@ const UploadItem = () => {
   const imageField = form["image"];
 
   const getFormAiDetails = async () => {
-    await getAiDetails({ url: IMAGE_URL });
-  };
-
-  const getFormDetails = async () => {
-    await getFormAutocomplete();
+    getAiDetails({ url: IMAGE_URL }).then((data) => {
+      setForm({
+        ...form,
+        title: data.title,
+        genre: data.type,
+        color: data.color,
+        material: data.material,
+        manufacturer: data.manufacturer,
+        style: data.style,
+        description: data.description,
+        condition: data.condition,
+      });
+    });
   };
 
   useEffect(() => {
-    // getFormDetails();
     if (!form.image) return;
-    // getFormAiDetails();
+    getFormAiDetails();
   }, [form.image]);
+
+  const renderOptions: any = {
+    ["genre"]: options.product_types,
+    ["color"]: options.colors,
+    ["material"]: options.materials,
+    ["manufacturer"]: options.manufacturers,
+    ["style"]: options.styles,
+  };
 
   const getFormGroupContent = (field: any) => {
     if (field.type === "file") {
@@ -212,6 +231,17 @@ const UploadItem = () => {
             form={form}
             handleInputChange={handleDimensionChange}
             name={field.name}
+          />
+        </>
+      );
+    } else if (field.type === "select") {
+      return (
+        <>
+          {field.label && <Label htmlFor={field.name}>{field.label}</Label>}
+          <Dropdown
+            selectedOption={form[field.name]}
+            options={renderOptions[field.name]}
+            onSelect={() => {}}
           />
         </>
       );
@@ -271,7 +301,7 @@ const UploadItem = () => {
       <Head>
         <title>העלאת מוצר</title>
       </Head>
-      <Title>מה תרצו למכור?</Title>
+      <Title>מה מוכרים?</Title>
       <Form onSubmit={handleSubmit}>
         {fields.map(
           (field) =>

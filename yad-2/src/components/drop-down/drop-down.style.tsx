@@ -16,7 +16,7 @@ const DropdownHeader = styled.div`
 `;
 
 const DropdownContent = styled.div<{ show: boolean }>`
-  display: ${(props) => (props.show ? "block" : "none")};
+  display: ${({ show }) => (show ? "block" : "none")};
   position: absolute;
   background-color: #f9f9f9;
   min-width: 100%;
