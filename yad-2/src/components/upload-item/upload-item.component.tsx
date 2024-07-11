@@ -1,31 +1,23 @@
+import getAiDetails from "@/utils/api/get-ai-details/get-ai-details";
+import getFormAutocomplete from "@/utils/api/get-ai-details/get-form-autocomplete";
 import AiPopup from "@components/ai-popup/ai-popup.component";
+import DimensionsInputs from "@components/dimensions-inputs/dimensions-inputs.component";
 import ImagePreview from "@components/image-preview/image-preview.component";
+import PriceOptions from "@components/price-options/price-options.component";
+import RadioButtons from "@components/radio-buttons/radio-buttons.component";
 import UploadImage from "@components/upload-image/upload-image.component";
 import Head from "next/head";
-import getAiDetails from "@/utils/api/get-ai-details/get-ai-details";
-import trashIcon from "@assets/icons/delete-icon.svg";
-import Head from "next/head";
-import Image from "next/image";
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import {
   Button,
   Container,
-  DimensionContainer,
-  DimensionInput,
-  DimensionLabel,
   Form,
   FormGroup,
   Input,
   Label,
-  RadioButtonLabel,
-  RadioButtonsContainer,
-  RadioInput,
   Textarea,
   Title,
 } from "./upload-item.style";
-import getFormAutocomplete from "@/utils/api/get-ai-details/get-form-autocomplete";
-import DimensionsInputs from "@components/dimensions-inputs/dimensions-inputs.component";
-import PriceOptions from "@components/price-options/price-options.component";
 
 interface Measurement {
   value: number | null;
@@ -248,26 +240,12 @@ const UploadItem = () => {
                 ) : field.type === "radio" ? (
                   <>
                     <Label>{field.label}</Label>
-                    <RadioButtonsContainer>
-                      {field?.options?.map((option) => (
-                        <React.Fragment key={option.value}>
-                          <RadioInput
-                            type="radio"
-                            name={field.name}
-                            id={`${field.name}-${option.value}`}
-                            value={option.value}
-                            checked={form[field.name] === option.value}
-                            onChange={handleInputChange}
-                          />
-                          <RadioButtonLabel
-                            htmlFor={`${field.name}-${option.value}`}
-                            checked={form[field.name] === option.value}
-                          >
-                            {option.label}
-                          </RadioButtonLabel>
-                        </React.Fragment>
-                      ))}
-                    </RadioButtonsContainer>
+                    <RadioButtons
+                      handleInputChange={handleInputChange}
+                      name={field.name}
+                      options={field?.options}
+                      value={form[field.name]}
+                    />
                   </>
                 ) : (
                   field.type !== "dimensions" && (
