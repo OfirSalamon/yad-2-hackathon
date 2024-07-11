@@ -13,9 +13,6 @@ import {
   FormGroup,
   Input,
   Label,
-  PriceRadioButtonLabel,
-  PriceRadioButtonLabelContainer,
-  PriceRadioInput,
   RadioButtonLabel,
   RadioButtonsContainer,
   RadioInput,
@@ -23,6 +20,7 @@ import {
   Title,
 } from "./upload-item.style";
 import DimensionsInputs from "@components/dimensions-inputs/dimensions-inputs.component";
+import PriceOptions from "@components/price-options/price-options.component";
 
 interface Measurement {
   value: number | null;
@@ -103,6 +101,8 @@ const UploadItem = () => {
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
+    console.log("name", name);
+    console.log("value", value);
     setForm({
       ...form,
       [name]: value,
@@ -218,39 +218,13 @@ const UploadItem = () => {
                 ) : field.priceOption ? (
                   <>
                     <Label>{field.label}</Label>
-                    <PriceRadioButtonLabelContainer>
-                      {field?.priceOption.options?.map((option) => (
-                        <React.Fragment key={option.value}>
-                          <PriceRadioInput
-                            type="radio"
-                            name={field.priceOption.name}
-                            id={`${field.priceOption.name}-${option.value}`}
-                            value={option.value}
-                            checked={
-                              form[field.priceOption.name] === option.value
-                            }
-                            onChange={() =>
-                              handlePriceOptionChange(
-                                option.value,
-                                option.price || ""
-                              )
-                            }
-                          />
-                          <PriceRadioButtonLabel
-                            htmlFor={`${field.priceOption.name}-${option.value}`}
-                          >
-                            {option.label}
-                            {option.price && `\n(₪${option.price})`}
-                          </PriceRadioButtonLabel>
-                        </React.Fragment>
-                      ))}
-                    </PriceRadioButtonLabelContainer>
-                    <Input
-                      type={field.type}
+                    <PriceOptions
+                      priceOptions={field?.priceOption}
+                      currPrice={form[field.priceOption.name]}
+                      handleInputChange={handleInputChange}
+                      handlePriceOptionChange={handlePriceOptionChange}
                       name={field.name}
-                      id={field.name}
-                      value={form[field.name as keyof typeof form] as string}
-                      onChange={handleInputChange}
+                      value={form[field.name as keyof typeof form]}
                     />
                   </>
                 ) : field.type === "radio" ? (
