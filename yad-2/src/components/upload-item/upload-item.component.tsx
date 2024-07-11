@@ -1,4 +1,8 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import getAiDetails from "@/utils/api/get-ai-details/get-ai-details";
+import trashIcon from "@assets/icons/delete-icon.svg";
+import Head from "next/head";
+import Image from "next/image";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import {
   Button,
   Container,
@@ -22,10 +26,9 @@ import {
   Textarea,
   Title,
 } from "./upload-item.style";
-import Head from "next/head";
-import trashIcon from "@assets/icons/delete-icon.svg";
-import Image from "next/image";
+import getFormAutocomplete from "@/utils/api/get-ai-details/get-form-autocomplete";
 
+const IMAGE_URL = "https://vdivani.co.il/wp-content/uploads/2020/11/ELOIZ.jpg";
 const fields = [
   { name: "title", label: "שם המוצר", type: "text", initialValue: "" },
   {
@@ -139,6 +142,20 @@ const UploadItem = () => {
 
   const isObject = (value: any): value is object =>
     value !== null && typeof value === "object";
+
+  const getFormAiDetails = async () => {
+    await getAiDetails({ url: IMAGE_URL });
+  };
+
+  const getFormDetails = async () => {
+    await getFormAutocomplete();
+  };
+
+  useEffect(() => {
+    getFormDetails();
+    if (!form.image) return;
+    getFormAiDetails();
+  }, [form.image]);
 
   return (
     <Container>
