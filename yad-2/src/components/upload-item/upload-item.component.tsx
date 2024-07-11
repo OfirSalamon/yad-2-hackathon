@@ -307,10 +307,13 @@ const UploadItem = () => {
       {showPopup && (
         <AiPopup
           handleFileChange={handleFileChange}
-          name={"image"}
+          imageName={"image"}
           label={"לחץ להעלות תמונה של המוצר"}
           image={imageField}
           handleDeleteFile={handleDeleteFile}
+          descriptionName={"description"}
+          descriptionValue={form["description"]}
+          handleInputChange={handleInputChange}
         />
       )}
     </Container>

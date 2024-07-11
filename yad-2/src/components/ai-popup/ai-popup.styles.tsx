@@ -9,7 +9,7 @@ const Container = styled(Col)`
   height: 100%;
 
   ${({ theme }) => css`
-    background-color: ${theme.colors.brand};
+    background-color: ${theme.colors.linen};
     padding: ${theme.sizes[48]};
   `}
 `;
