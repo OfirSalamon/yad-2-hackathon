@@ -63,7 +63,6 @@ const AiPopup = ({
                   נדאג להכל :)
                 </Text>
               </Col>
-
               <ImageContainer>
                 {image ? (
                   <Col $aic $jcc $fw>

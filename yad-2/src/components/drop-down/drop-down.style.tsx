@@ -13,15 +13,19 @@ const DropdownHeader = styled.div`
   border-radius: 4px;
   width: 100%;
   box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const DropdownContent = styled.div<{ show: boolean }>`
-  display: ${({ show }) => (show ? "block" : "none")};
+  visibility: ${({ show }) => (show ? "visible" : "hidden")};
+  opacity: ${({ show }) => (show ? "1" : "0")};
   position: absolute;
   background-color: #f9f9f9;
   min-width: 100%;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
+  transition: opacity 0.5s ease;
 `;
 
 const DropdownItem = styled.a`
