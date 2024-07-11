@@ -2,13 +2,10 @@ import { Text } from "@/styles/typography/typography.styles";
 import { Container } from "./ai-popup.styles";
 import { ChangeEvent } from "react";
 import UploadImage from "@components/upload-image/upload-image.component";
-import {
-  ItemImage,
-  ItemImageContainer,
-  Textarea,
-} from "@components/upload-item/upload-item.style";
+import { Textarea } from "@components/upload-item/upload-item.style";
 import Image from "next/image";
 import trashIcon from "@assets/icons/delete-icon.svg";
+import ImagePreview from "@components/image-preview/image-preview.component";
 
 interface Props {
   image: File;
@@ -39,22 +36,7 @@ const AiPopup = ({
         מה מוכרים?
       </Text>
       {image ? (
-        <ItemImageContainer>
-          <ItemImage
-            src={URL.createObjectURL(image)}
-            alt="Uploaded Product"
-            width={0}
-            height={0}
-          />
-          <Image
-            style={{ cursor: "pointer" }}
-            onClick={handleDeleteFile}
-            src={trashIcon}
-            alt="Trash icon"
-            width={20}
-            height={20}
-          />
-        </ItemImageContainer>
+        <ImagePreview handleDeleteFile={handleDeleteFile} image={image} />
       ) : (
         <UploadImage
           name={imageName}

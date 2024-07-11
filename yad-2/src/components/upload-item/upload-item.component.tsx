@@ -1,3 +1,7 @@
+import AiPopup from "@components/ai-popup/ai-popup.component";
+import ImagePreview from "@components/image-preview/image-preview.component";
+import UploadImage from "@components/upload-image/upload-image.component";
+import Head from "next/head";
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import {
   Button,
@@ -5,13 +9,9 @@ import {
   DimensionContainer,
   DimensionInput,
   DimensionLabel,
-  FileInput,
-  FileInputLabel,
   Form,
   FormGroup,
   Input,
-  ItemImage,
-  ItemImageContainer,
   Label,
   PriceRadioButtonLabel,
   PriceRadioButtonLabelContainer,
@@ -22,10 +22,6 @@ import {
   Textarea,
   Title,
 } from "./upload-item.style";
-import Head from "next/head";
-import trashIcon from "@assets/icons/delete-icon.svg";
-import Image from "next/image";
-import AiPopup from "@components/ai-popup/ai-popup.component";
 
 const fields = [
   { name: "title", label: "שם המוצר", type: "text", initialValue: "" },
@@ -160,35 +156,16 @@ const UploadItem = () => {
               <FormGroup key={field.name}>
                 {field.type === "file" ? (
                   form.image ? (
-                    <ItemImageContainer>
-                      <ItemImage
-                        src={URL.createObjectURL(form.image)}
-                        alt="Uploaded Product"
-                        width={0}
-                        height={0}
-                      />
-                      <Image
-                        style={{ cursor: "pointer" }}
-                        onClick={handleDeleteFile}
-                        src={trashIcon}
-                        alt="Trash icon"
-                        width={20}
-                        height={20}
-                      />
-                    </ItemImageContainer>
+                    <ImagePreview
+                      handleDeleteFile={handleDeleteFile}
+                      image={form.image}
+                    />
                   ) : (
-                    <>
-                      <FileInputLabel htmlFor={field.name}>
-                        {field.label}
-                      </FileInputLabel>
-                      <FileInput
-                        type={field.type}
-                        name={field.name}
-                        id={field.name}
-                        multiple
-                        onChange={handleFileChange}
-                      />
-                    </>
+                    <UploadImage
+                      handleFileChange={handleFileChange}
+                      label={field.label}
+                      name={field.name}
+                    />
                   )
                 ) : field.type === "dimensions" &&
                   isObject(field.initialValue) ? (
