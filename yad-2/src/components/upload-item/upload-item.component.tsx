@@ -152,9 +152,9 @@ const UploadItem = () => {
   };
 
   useEffect(() => {
-    getFormDetails();
+    // getFormDetails();
     if (!form.image) return;
-    getFormAiDetails();
+    // getFormAiDetails();
   }, [form.image]);
 
   return (
