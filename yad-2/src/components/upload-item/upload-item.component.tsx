@@ -22,6 +22,7 @@ import {
   Textarea,
   Title,
 } from "./upload-item.style";
+import DimensionsInputs from "@components/dimensions-inputs/dimensions-inputs.component";
 
 const fields = [
   { name: "title", label: "שם המוצר", type: "text", initialValue: "" },
@@ -85,7 +86,7 @@ const initialFormState = fields.reduce((acc, field) => {
 
 const UploadItem = () => {
   const [form, setForm] = useState(initialFormState);
-  const [showPopup, setShowPopup] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -95,6 +96,24 @@ const UploadItem = () => {
       ...form,
       [name]: value,
     });
+  };
+
+  const handleDimensionChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    dimensionName: string,
+    key: string
+  ) => {
+    const { value } = e.target;
+    setForm((prevForm) => ({
+      ...prevForm,
+      [dimensionName]: {
+        ...prevForm[dimensionName],
+        [key]: {
+          ...prevForm[dimensionName][key],
+          value: value,
+        },
+      },
+    }));
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -171,25 +190,12 @@ const UploadItem = () => {
                   isObject(field.initialValue) ? (
                   <>
                     <Label>{field.label}</Label>
-                    <DimensionContainer>
-                      {Object.keys(field.initialValue).map((key) => (
-                        <div key={key}>
-                          <DimensionLabel>
-                            {(field.initialValue as any)[key].label}
-                          </DimensionLabel>
-                          <DimensionInput
-                            type="number"
-                            name={`${field.name}.${key}.value`}
-                            id={`${field.name}.${key}.value`}
-                            value={
-                              form[field.name as keyof typeof form][key]
-                                ?.value || ""
-                            }
-                            onChange={handleInputChange}
-                          />
-                        </div>
-                      ))}
-                    </DimensionContainer>
+                    <DimensionsInputs
+                      dimensions={field.initialValue}
+                      form={form}
+                      handleInputChange={handleDimensionChange}
+                      name={field.name}
+                    />
                   </>
                 ) : field.priceOption ? (
                   <>
