@@ -13,6 +13,7 @@ import backIcon from "@assets/icons/back.svg";
 import ImagePreview from "@components/image-preview/image-preview.component";
 import { Col, Row } from "@/styles/container/container.styles";
 import Image from "next/image";
+import Spinner from "@components/spinner/spinner.component";
 
 interface Props {
   image: File;
@@ -26,6 +27,7 @@ interface Props {
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => void;
   onButtonClick: () => void;
+  loading?: boolean;
 }
 
 const AiPopup = ({
@@ -38,6 +40,7 @@ const AiPopup = ({
   descriptionValue,
   handleInputChange,
   onButtonClick,
+  loading,
 }: Props) => {
   return (
     <Container $jcsb>
