@@ -19,6 +19,7 @@ import {
   Textarea,
   Title,
 } from "./upload-item.style";
+import { Row } from "@/styles/container/container.styles";
 
 interface Measurement {
   value: number | null;
@@ -51,7 +52,7 @@ const fields = [
     type: "dimensions",
     initialValue: {
       length: { value: 10, label: "אורך" },
-      width: { value: 10, label: "רוחב" },
+      depth: { value: 10, label: "רוחב" },
       height: { value: 10, label: "גובה" },
     },
   },
@@ -78,11 +79,11 @@ const fields = [
     label: "מצב המוצר",
     type: "radio",
     options: [
-      { value: "new", label: "חדש באריזה" },
-      { value: "like_new", label: "כמו חדש" },
-      { value: "used", label: "משומש" },
-      { value: "need_fix", label: "נדרש תיקון" },
-      { value: "irrelevante", label: "לא רלוונטי" },
+      { value: "חדש באריזה" },
+      { value: "כמו חדש" },
+      { value: "משומש" },
+      { value: "נדרש תיקון" },
+      { value: "לא רלוונטי" },
     ],
     initialValue: "",
   },
@@ -106,11 +107,13 @@ const UploadItem = ({ options }: Props) => {
   });
   const [showPopup, setShowPopup] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [aiDescription, setAiDescription] = useState(false);
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
+    console.log("{ name, value }", { name, value });
     setForm({
       ...form,
       [name]: value,
@@ -184,12 +187,21 @@ const UploadItem = ({ options }: Props) => {
     setLoading(true);
     getAiDetails({ url: IMAGE_URL, description: form.description })
       .then((data) => {
-        const { above_market_price, below_market_price, market_price } = data;
+        const {
+          above_market_price,
+          below_market_price,
+          market_price,
+          height,
+          length,
+          depth,
+          description,
+        } = data;
         setPrices({
           below_market_price,
           above_market_price,
           market_price,
         });
+        description && setAiDescription(true);
         setForm({
           ...form,
           title: data.title,
@@ -198,8 +210,13 @@ const UploadItem = ({ options }: Props) => {
           material: data.material,
           manufacturer: data.manufacturer,
           style: data.style,
-          description: data.description,
+          suggestion: description,
           condition: data.condition,
+          dimensions: {
+            height: { ...form.dimensions.height, value: height },
+            length: { ...form.dimensions.length, value: length },
+            depth: { ...form.dimensions.depth, value: depth },
+          },
         });
       })
       .then(() => setShowPopup(false));
@@ -218,11 +235,13 @@ const UploadItem = ({ options }: Props) => {
       return form.image ? (
         <ImagePreview handleDeleteFile={handleDeleteFile} image={form.image} />
       ) : (
-        <UploadImage
-          handleFileChange={handleFileChange}
-          label={field.label}
-          name={field.name}
-        />
+        <Row $aic $jcc>
+          <UploadImage
+            handleFileChange={handleFileChange}
+            label={field.label}
+            name={field.name}
+          />
+        </Row>
       );
     } else if (
       field.type === "dimensions" &&
@@ -257,7 +276,7 @@ const UploadItem = ({ options }: Props) => {
           <Label>{field.label}</Label>
           <PriceOptions
             priceOptions={field?.priceOption}
-            currPrice={form[field.priceOption.name]}
+            currPrice={form.price}
             handleInputChange={handleInputChange}
             handlePriceOptionChange={handlePriceOptionChange}
             name={field.name}
@@ -281,16 +300,32 @@ const UploadItem = ({ options }: Props) => {
         </>
       );
     } else if (field.type !== "dimensions") {
+      const isTextArea = field.type === "textarea";
+      const descriptionValue = aiDescription
+        ? form.suggestion
+        : form.description;
+
+      const replaceText = aiDescription
+        ? "החלף לתיאור שלי"
+        : "החלף לתיאור המוצע";
       return (
         <>
           {field.label && <Label htmlFor={field.name}>{field.label}</Label>}
-          {field.type === "textarea" ? (
-            <Textarea
-              name={field.name}
-              id={field.name}
-              value={form[field.name as keyof typeof form] as string}
-              onChange={handleInputChange}
-            />
+          {isTextArea ? (
+            <>
+              <Textarea
+                name={field.name}
+                id={field.name}
+                value={descriptionValue}
+                onChange={handleInputChange}
+                height={"150px"}
+              />
+              {form.description && (
+                <Button onClick={() => setAiDescription((prev) => !prev)}>
+                  {replaceText}
+                </Button>
+              )}
+            </>
           ) : (
             <Input
               type={field.type}

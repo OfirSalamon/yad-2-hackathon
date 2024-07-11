@@ -8,7 +8,7 @@ import { Input } from "@components/upload-item/upload-item.style";
 
 interface Props {
   priceOptions: any;
-  currPrice: number;
+  currPrice: string;
   above_market_price: number;
   below_market_price: number;
   market_price: number;
@@ -37,25 +37,34 @@ const PriceOptions = ({
     [priceOptions.options[2].label]: above_market_price,
     [priceOptions.options[3].label]: undefined,
   };
+  console.log("map", map);
+  console.log("currPrice", currPrice);
+  const currPriceNum = parseFloat(currPrice);
+  const isCurrPriceInMap = Object.values(map).includes(currPriceNum);
   return (
     <>
       <PriceRadioButtonLabelContainer>
-        {Object.keys(map)?.map((name: string, index) => (
-          <React.Fragment key={index}>
-            <PriceRadioInput
-              type="radio"
-              name={priceOptions.name}
-              id={`${priceOptions.name}-${name}`}
-              value={map[name]}
-              checked={currPrice === map[name]}
-              onChange={() => handlePriceOptionChange(`${map[name]}` || "")}
-            />
-            <PriceRadioButtonLabel htmlFor={`${priceOptions.name}-${name}`}>
-              {name}
-              {map[name] && `\n(₪${map[name]})`}
-            </PriceRadioButtonLabel>
-          </React.Fragment>
-        ))}
+        {Object.keys(map)?.map((name: string, index) => {
+          const isSelected =
+            name === "אחר" ? !isCurrPriceInMap : +currPrice === map[name];
+
+          return (
+            <React.Fragment key={index}>
+              <PriceRadioInput
+                type="radio"
+                name={priceOptions.name}
+                id={`${priceOptions.name}-${name}`}
+                value={map[name]}
+                checked={isSelected}
+                onChange={() => handlePriceOptionChange(`${map[name]}`)}
+              />
+              <PriceRadioButtonLabel htmlFor={`${priceOptions.name}-${name}`}>
+                {name}
+                {map[name] && `\n(₪${map[name]})`}
+              </PriceRadioButtonLabel>
+            </React.Fragment>
+          );
+        })}
       </PriceRadioButtonLabelContainer>
       <Input
         type={"number"}

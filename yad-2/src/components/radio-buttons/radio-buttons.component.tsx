@@ -31,7 +31,7 @@ const RadioButtons = ({ options, name, value, handleInputChange }: Props) => {
             htmlFor={`${name}-${option.value}`}
             checked={value === option.value}
           >
-            {option.label}
+            {option.value}
           </RadioButtonLabel>
         </React.Fragment>
       ))}
