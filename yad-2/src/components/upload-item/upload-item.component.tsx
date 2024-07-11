@@ -29,6 +29,7 @@ interface MeasurementValues {
   width: Measurement;
   height: Measurement;
 }
+import Dropdown from "@components/drop-down/drop-down.component";
 
 const IMAGE_URL = "https://vdivani.co.il/wp-content/uploads/2020/11/ELOIZ.jpg";
 const fields = [
