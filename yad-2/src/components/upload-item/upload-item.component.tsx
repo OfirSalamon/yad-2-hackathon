@@ -1,3 +1,5 @@
+import { Row } from "@/styles/container/container.styles";
+import { Text } from "@/styles/typography/typography.styles";
 import { IDetails } from "@/types";
 import getAiDetails from "@/utils/api/get-ai-details/get-ai-details";
 import AiPopup from "@components/ai-popup/ai-popup.component";
@@ -5,10 +7,11 @@ import DimensionsInputs from "@components/dimensions-inputs/dimensions-inputs.co
 import Dropdown from "@components/drop-down/drop-down.component";
 import ImagePreview from "@components/image-preview/image-preview.component";
 import PriceOptions from "@components/price-options/price-options.component";
+import ProductPage from "@components/product-page/product-page.component";
 import RadioButtons from "@components/radio-buttons/radio-buttons.component";
 import UploadImage from "@components/upload-image/upload-image.component";
 import Head from "next/head";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import {
   Button,
   Container,
@@ -20,8 +23,6 @@ import {
   Textarea,
   Title,
 } from "./upload-item.style";
-import { Row } from "@/styles/container/container.styles";
-import { Text } from "@/styles/typography/typography.styles";
 
 interface Measurement {
   value: number | null;
@@ -113,9 +114,11 @@ const UploadItem = ({ options }: Props) => {
     above_market_price: "",
     market_price: "",
   });
+  const [showProductPage, setShowProductPage] = useState(false);
   const [showPopup, setShowPopup] = useState(true);
   const [loading, setLoading] = useState(false);
   const [aiDescription, setAiDescription] = useState(false);
+  console.log({ form });
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -170,22 +173,18 @@ const UploadItem = ({ options }: Props) => {
     });
   };
 
-  const handlePriceOptionChange = (price?: string) => {
+  const handlePriceOptionChange = (price?: string) =>
     setForm({
       ...form,
       price: price || "",
     });
-  };
 
   const handleSubmit = (e: FormEvent) => {
+    setShowProductPage(true);
     e.preventDefault();
-    // Handle form submission logic here
-    console.log(form);
   };
 
-  const onPopupButtonClick = () => {
-    getFormAiDetails();
-  };
+  const onPopupButtonClick = () => getFormAiDetails();
 
   const isObject = (value: any): value is object =>
     value !== null && typeof value === "object";
@@ -358,7 +357,9 @@ const UploadItem = ({ options }: Props) => {
                 onChange={handleInputChange}
               />
               {field.name === "address" && (
-                <Button onClick={handleUseMyLocation}>השתמש במיקום שלי</Button>
+                <Button type="button" onClick={handleUseMyLocation}>
+                  השתמש במיקום שלי
+                </Button>
               )}
             </>
           )}
@@ -369,36 +370,44 @@ const UploadItem = ({ options }: Props) => {
 
   return (
     <Container>
-      <Head>
-        <title>העלאת מוצר</title>
-      </Head>
-      <Title>מה מוכרים?</Title>
-      <Form onSubmit={handleSubmit}>
-        {fields.map(
-          (field) =>
-            (field.type === "file" ||
-              (form[field.name as keyof typeof form] !== null &&
-                form[field.name as keyof typeof form] !== undefined)) && (
-              <FormGroup key={field.name}>
-                {getFormGroupContent(field)}
-              </FormGroup>
-            )
-        )}
-        <Button type="submit">פרסם מוצר</Button>
-      </Form>
-      {showPopup && (
-        <AiPopup
-          loading={loading}
-          handleFileChange={handleFileChange}
-          imageName={"image"}
-          label={"העלה תמונה"}
-          image={imageField}
-          handleDeleteFile={handleDeleteFile}
-          descriptionName={"description"}
-          descriptionValue={form["description"]}
-          handleInputChange={handleInputChange}
-          onButtonClick={onPopupButtonClick}
-        />
+      {showProductPage ? (
+        <ProductPage form={form}></ProductPage>
+      ) : (
+        <>
+          <Head>
+            <title>העלאת מוצר</title>
+          </Head>
+          <Title>מה מוכרים?</Title>
+          <Form onSubmit={handleSubmit}>
+            {fields.map(
+              (field) =>
+                (field.type === "file" ||
+                  (form[field.name as keyof typeof form] !== null &&
+                    form[field.name as keyof typeof form] !== undefined)) && (
+                  <FormGroup key={field.name}>
+                    {getFormGroupContent(field)}
+                  </FormGroup>
+                )
+            )}
+            <Button onClick={() => {}} type="submit">
+              פרסם מוצר
+            </Button>
+          </Form>
+          {showPopup && (
+            <AiPopup
+              loading={loading}
+              handleFileChange={handleFileChange}
+              imageName={"image"}
+              label={"העלה תמונה"}
+              image={imageField}
+              handleDeleteFile={handleDeleteFile}
+              descriptionName={"description"}
+              descriptionValue={form["description"]}
+              handleInputChange={handleInputChange}
+              onButtonClick={onPopupButtonClick}
+            />
+          )}
+        </>
       )}
     </Container>
   );

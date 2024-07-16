@@ -4,10 +4,15 @@ import { ItemImage, ItemImageContainer } from "./image-preview.style";
 
 interface Props {
   image: File;
-  handleDeleteFile: () => void;
+  handleDeleteFile?: () => void;
+  showDeleteIcon?: boolean;
 }
 
-const ImagePreview = ({ image, handleDeleteFile }: Props) => {
+const ImagePreview = ({
+  image,
+  handleDeleteFile,
+  showDeleteIcon = true,
+}: Props) => {
   return (
     <ItemImageContainer>
       <ItemImage
@@ -16,19 +21,21 @@ const ImagePreview = ({ image, handleDeleteFile }: Props) => {
         width={0}
         height={0}
       />
-      <Image
-        style={{
-          cursor: "pointer",
-          position: "absolute",
-          bottom: "10px",
-          left: "10px",
-        }}
-        onClick={handleDeleteFile}
-        src={trashIcon}
-        alt="Trash icon"
-        width={20}
-        height={20}
-      />
+      {showDeleteIcon && (
+        <Image
+          style={{
+            cursor: "pointer",
+            position: "absolute",
+            bottom: "10px",
+            left: "10px",
+          }}
+          onClick={handleDeleteFile}
+          src={trashIcon}
+          alt="Trash icon"
+          width={20}
+          height={20}
+        />
+      )}
     </ItemImageContainer>
   );
 };
